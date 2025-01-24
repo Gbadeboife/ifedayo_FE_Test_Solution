@@ -1,0 +1,102 @@
+export const DRAFT_STATUS = {
+  PROPERTY_SPACE: 0,
+  IMAGES: 1,
+  SCHEDULING: 2,
+  COMPLETED: 3,
+  UNSET: null,
+};
+
+export const ID_PREFIX = {
+  USER: "U-",
+  HOST: "H-",
+  CUSTOMER: "C-",
+  PROPERTY: "P-",
+  PROPERTY_SPACE: "PS-",
+  SPACE_CATEGORY: "SC-",
+  ADDON_CATEGORY: "AOC-",
+  AMENITY_CATEGORY: "AMC-",
+  PROPERTY_SPACE_IMAGES: "PSI-",
+  PROPERTY_SPACE_AMENITIES: "PSA-",
+  PROPERTY_SPACE_FAQS: "PSF-",
+  PROPERTY_ADDON: "PA-",
+  BOOKINGS: "BK-",
+  BOOKING_ADDON: "BKA-",
+  PAYOUT: "PY-",
+  HASHTAGS: "H-",
+  REVIEWS: "R-",
+  FAQS: "F-",
+  EMAIL: "E-",
+  SETTING: "S-",
+  ID_VERIFICATION: "IDV-",
+  NOTIFICATION: "N-",
+  DEVICE: "D-",
+  PAYMENT_METHOD: "PM-",
+};
+
+export const BOOKING_STATUS = {
+  PENDING: 0,
+  UPCOMING: 1,
+  ONGOING: 2,
+  COMPLETED: 3,
+  DECLINED: 4,
+  CANCELLED: 5,
+  DELETED: 6,
+};
+
+export const PAYMENT_STATUS = {
+  NOT_PAID: 0,
+  SUCCESSFUL: 1,
+  PENDING: 2,
+  FAILED: 3
+}
+
+export const SPACE_STATUS = {
+  UNDER_REVIEW: 0,
+  APPROVED: 1,
+  DECLINED: 2,
+};
+
+export const SPACE_VISIBILITY = {
+  HIDDEN: 0,
+  VISIBLE: 1,
+};
+
+export const ARCHIVE_STATUS = {
+  NOT_ARCHIVE: 0,
+  IS_ARCHIVE: 1,
+};
+
+export const SPACE_CATEGORY_SIZES = {
+  SMALL: 0,
+  MEDIUM: 1,
+  LARGE: 2,
+  X_LARGE: 3,
+  UNSET: null,
+};
+
+export const IMAGE_STATUS = {
+  IN_REVIEW: 0,
+  APPROVED: 1,
+  NOT_APPROVED: 2,
+};
+
+export const NOTIFICATION_STATUS = {
+  NOT_ADDRESSED: 0,
+  ADDRESSED: 1,
+};
+
+export const NOTIFICATION_TYPE = {
+  CREATE_SPACE: 0,
+  CREATE_PROPERTY_SPACE_IMAGE: 1,
+  EDIT_USER_PICTURE: 2,
+  EDIT_PROPERTY_SPACE: 3,
+  ADD_REVIEW: 4,
+  ADD_PAYOUT: 5,
+  NEW_ID_VERIFICATION: 6,
+};
+
+export const ID_VERIFICATION_STATUSES = {
+  PENDING: 0,
+  VERIFIED: 1,
+  REJECTED: 2,
+};

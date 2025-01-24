@@ -1,0 +1,39 @@
+{
+  "name": "Ergo",
+  "short_name": "Ergo",
+  "description": "Ergo App",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "124x124",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "124x124",
+      "type": "image/png"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "124x124",
+      "type": "image/png"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "124x124",
+      "type": "image/png"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "124x124",
+      "type": "image/png"
+    }
+  ],
+  "purpose": "any"
+}

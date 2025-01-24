@@ -1,0 +1,9 @@
+.hidden-scrollbar {
+    overflow: -moz-scrollbars-none; /* For older Firefox versions */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  }
+  
+  .hidden-scrollbar::-webkit-scrollbar {
+    display: none; /* For WebKit browsers */
+  }
