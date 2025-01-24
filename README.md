@@ -1,14 +1,18 @@
 # ERGO BOOKING SYSTEM 
 
 ## SETUP Process
-- You are expected to clone this repository and set up a new repo remotely on ur github with the code 
+- You are expected to clone this repository and set up a new repo remotely on ur github with the code (Preferably name the repo with your name. E.g John_Doe_FE_Test_Soln) 
     To set up locally
     - **a.** clone the repo to your local machine 
     - **a.** update remote origin
     - **b.** install dependencies (using -- "npm install") 
     - **b.** run locally on your computer using this command - "npm run dev"
 
-- Make sure to commit each fix with a valid message entailing what issue was fixed in the commit. This will help when grading your solutionm
+- Make sure to commit each fix with a valid message entailing what issue was fixed in the commit. This will help when grading your solution
+
+- When you are done, cross check all fixes and then submit the repo that has your solutions. 
+
+- Any commit after your submmission will be discarded and won't be graded.
 
 ## Table of Contents
 1. [User Credentials](#user-credentials)
