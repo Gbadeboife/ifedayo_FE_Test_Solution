@@ -14,6 +14,8 @@
 
 - Any commit after your submmission will be discarded and won't be graded.
 
+- PLEASE make sure to deploy the app to a live server, to allow full test by the Development team and the Quality Assurance Team (preferably vercel)
+
 ## Table of Contents
 1. [User Credentials](#user-credentials)
 2. [Environment Variables](#environment-variables)
