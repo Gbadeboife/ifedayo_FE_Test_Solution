@@ -103,6 +103,83 @@ const SpaceDetailsTwo = () => {
     }
   };
 
+  const handleFileChange = (files) => {
+    console.log('FileUploader received files:', files);
+    console.log('Files type:', typeof files);
+    console.log('Is files array?', Array.isArray(files));
+    console.log('Files length:', files?.length);
+    
+    // Check if we're already at max 6 images
+    if (pictures.length >= 6) {
+      showToast(globalDispatch, 'Maximum 6 images allowed.', 4000, "ERROR");
+      return;
+    }
+
+    // Convert to array if single file
+    const fileArray = Array.isArray(files) ? files : [files];
+    console.log('File array:', fileArray);
+    
+    // Validate each file
+    for (let i = 0; i < fileArray.length; i++) {
+      const file = fileArray[i];
+      console.log('Processing file at index', i, ':', file);
+      console.log('File object keys:', Object.keys(file || {}));
+      console.log('File type property:', file?.type);
+      console.log('File name property:', file?.name);
+      console.log('File size property:', file?.size);
+      
+      // Check if file is actually a File object
+      if (!file || !(file instanceof File)) {
+        console.log('File is not a valid File object');
+        showToast(globalDispatch, 'Invalid file object received.', 4000, "ERROR");
+        return;
+      }
+      
+      // Check file type - be more flexible with MIME types
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/svg+xml'];
+      const fileType = file?.type?.toLowerCase();
+      
+      console.log('File type (lowercase):', fileType);
+      console.log('Allowed types:', allowedTypes);
+      console.log('Is file type allowed?', allowedTypes.includes(fileType));
+      
+      // Check if file type is valid
+      let isValidType = false;
+      
+      // First check MIME type
+      if (fileType && allowedTypes.includes(fileType)) {
+        isValidType = true;
+      } else {
+        // Fallback to file extension check
+        const fileName = file?.name?.toLowerCase() || '';
+        const validExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.svg'];
+        isValidType = validExtensions.some(ext => fileName.endsWith(ext));
+        
+        console.log('File name (lowercase):', fileName);
+        console.log('Valid extensions:', validExtensions);
+        console.log('Has valid extension?', isValidType);
+      }
+      
+      if (!isValidType) {
+        showToast(globalDispatch, `Invalid file type: ${fileType || 'unknown'}. Only JPEG, PNG, WEBP, and SVG are allowed.`, 4000, "ERROR");
+        return;
+      }
+
+      // Check file size (1MB = 1024 * 1024 bytes)
+      if (file?.size > 1024 * 1024) {
+        showToast(globalDispatch, `${file.name} is too large. Max size is 1MB.`, 4000, "ERROR");
+        return;
+      }
+    }
+
+    // Add files to pictures array
+    setPictures(prev => [...prev, ...fileArray]);
+  };
+
+  const removeImage = (index) => {
+    setPictures(prev => prev.filter((_, i) => i !== index));
+  };
+
   const onSubmit = async (data) => {
     const uploadedImages = [];
     const uploadedIds = [];
@@ -272,15 +349,22 @@ const SpaceDetailsTwo = () => {
   }, [addons]);
 
   useEffect(() => {
-    for (let i = 0; i < spaceData.pictures.length; i++) {
-      const url = spaceData.pictures[i];
-      getFileFromUrl(url).then((picFile) => {
-        setPictures((prev) => {
-          var copy = [...prev];
-          copy[i] = picFile;
-          return copy;
-        });
-      });
+    // Only load existing images if they actually exist and are not empty
+    if (spaceData.pictures && spaceData.pictures.length > 0) {
+      for (let i = 0; i < spaceData.pictures.length; i++) {
+        const url = spaceData.pictures[i];
+        if (url) { // Only process if URL exists
+          getFileFromUrl(url).then((picFile) => {
+            if (picFile) { // Only add if file was successfully created
+              setPictures((prev) => {
+                var copy = [...prev];
+                copy[i] = picFile;
+                return copy;
+              });
+            }
+          });
+        }
+      }
     }
   }, []);
 
@@ -300,11 +384,47 @@ const SpaceDetailsTwo = () => {
         <h1 className="mb-8 text-3xl font-bold md:text-4xl">Space Details</h1>
         <div className="text-sm md:px-[20px] md:py-[32px]">
           <h3 className="text-xl font-semibold md:text-2xl">* Photographs of the space</h3>
-          <p className="mb-8">file type (jpeg/png/svg), max size (5MB), suggest resolution (640*480)</p>
-          <div className="eighteen-step-image mb-8 flex flex-wrap justify-center gap-x-2 gap-y-4 md:gap-5">
-            {pictures.map((file, idx) => {
-              // add FileUploader logic here
-            })}
+          <p className="mb-8">file type (jpeg/png/svg), max size (1MB), suggest resolution (640*480)</p>
+          <div className="flex flex-wrap justify-center mb-8 eighteen-step-image gap-x-2 gap-y-4 md:gap-5">
+            {pictures.map((file, idx) => (
+              <div key={idx} className="relative">
+                <img
+                  src={file ? URL.createObjectURL(file) : (spaceData.pictures && spaceData.pictures[idx] ? spaceData.pictures[idx] : '')}
+                  alt={`Preview ${idx + 1}`}
+                  className="object-cover w-24 h-24 border border-gray-300 rounded-lg"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeImage(idx)}
+                  className="absolute flex items-center justify-center w-6 h-6 text-xs text-white bg-red-500 rounded-full -top-2 -right-2 hover:bg-red-600 z-10"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+            
+            {pictures.length < 6 && (
+              <div className="relative flex items-center justify-center w-24 h-24 transition-colors border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:border-gray-400">
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => {
+                    console.log('File input change event:', e);
+                    console.log('Files from input:', e.target.files);
+                    const files = Array.from(e.target.files);
+                    handleFileChange(files);
+                  }}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                />
+                <div className="text-center pointer-events-none">
+                  <svg className="w-8 h-8 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <p className="mt-1 text-xs text-gray-500">Add Image</p>
+                </div>
+              </div>
+            )}
           </div>
           <h3 className="mb-4 text-xl font-bold">* Select thumbnail image</h3>
           <CustomSelectV2
@@ -312,16 +432,16 @@ const SpaceDetailsTwo = () => {
             labelField="name"
             valueField="name"
             containerClassName="mb-12"
-            className="w-full border py-2 px-3 focus:outline-primary"
+            className="w-full px-3 py-2 border focus:outline-primary"
             openClassName="ring-primary ring-2"
             placeholder={"Select thumbnail"}
             control={control}
             name="thumbnail"
           />
           <h3 className="mb-4 text-xl font-bold">
-            What do you offer with the space <span className="text-sm font-normal italic text-gray-500">(optional)</span>
+            What do you offer with the space <span className="text-sm italic font-normal text-gray-500">(optional)</span>
           </h3>
-          <div className="flex gap-3 items-center">
+          <div className="flex items-center gap-3">
           <button
             type="button"
             className="mb-2 font-bold text-[#1570EF]"
@@ -331,7 +451,7 @@ const SpaceDetailsTwo = () => {
           </button>
 
           </div>
-          <div className="addons-grid mb-12">
+          <div className="mb-12 addons-grid">
             {amenities
               ?.filter((am) => {
                 if (Array.isArray(selectedAmenities)) {
@@ -341,7 +461,7 @@ const SpaceDetailsTwo = () => {
               }).sort((a, b) => (a.space_id === null ? -1 : 1) - (b.space_id === null ? -1 : 1))
               .map((am) => (
                 <li
-                  className="flex w-fit items-center gap-2 mb-4 sm:mb-0"
+                  className="flex items-center gap-2 mb-4 w-fit sm:mb-0"
                   key={am.id}>
                   <CircleCheckIcon />
                   {am.name}
@@ -349,9 +469,9 @@ const SpaceDetailsTwo = () => {
               ))}
           </div>
           <h3 className="mb-4 text-xl font-bold">
-            Add-ons <span className="text-sm font-normal italic text-gray-500">(optional)</span>
+            Add-ons <span className="text-sm italic font-normal text-gray-500">(optional)</span>
           </h3>
-          <div className="flex gap-3 items-center">
+          <div className="flex items-center gap-3">
           <button
             type="button"
             className="mb-2 font-bold text-[#1570EF]"
@@ -362,7 +482,7 @@ const SpaceDetailsTwo = () => {
 
           </div>
         
-          <div className="addons-grid mb-12">
+          <div className="mb-12 addons-grid">
             {addons
               ?.filter((addon) => {
                 if (Array.isArray(selectedAddons)) {
@@ -372,14 +492,14 @@ const SpaceDetailsTwo = () => {
               }).sort((a, b) => (a.space_id === null ? -1 : 1) - (b.space_id === null ? -1 : 1))
               .map((addon) => (
                 <li
-                  className="flex w-fit items-center gap-2 mb-4 sm:mb-0"
+                  className="flex items-center gap-2 mb-4 w-fit sm:mb-0"
                   key={addon.id}>
                   <CircleCheckIcon />
                   {addon.name}</li>
               ))}
           </div>
           <h3 className="mb-2 text-xl font-bold">
-            Frequently asked question <span className="text-sm font-normal italic text-gray-500">(optional)</span>
+            Frequently asked question <span className="text-sm italic font-normal text-gray-500">(optional)</span>
           </h3>
           <p>These FAQs will show as part of your space listing.</p>
           <div>
@@ -421,7 +541,7 @@ const SpaceDetailsTwo = () => {
               className="mb-12 font-bold text-[#1570EF]"
               type="button"
               id="append_faq_btn"
-              // add logic to handle appending new FAQs field
+              onClick={() => append({ question: "", answer: "" })}
             >
               + Add question
             </button>
@@ -432,7 +552,7 @@ const SpaceDetailsTwo = () => {
         </p>
         <div className="flex justify-end">
           <Link to={"/help/cancellation-policy"}
-            className="mt-4 text-end text-sm font-semibold underline"
+            className="mt-4 text-sm font-semibold underline text-end"
             target={"_blank"}
           >
             View More
@@ -441,7 +561,7 @@ const SpaceDetailsTwo = () => {
         <hr className="my-[30px]" />
         <button
           type="submit"
-          className="login-btn-gradient rounded py-2 px-4 tracking-wide text-white outline-none focus:outline-none"
+          className="px-4 py-2 tracking-wide text-white rounded outline-none login-btn-gradient focus:outline-none"
         >
           Continue
         </button>
@@ -459,7 +579,7 @@ const SpaceDetailsTwo = () => {
               <button
                 type="button"
                 onClick={() => setAddAmenitiesPopup(false)}
-                className="rounded-full border p-1 px-3 text-2xl font-normal duration-100 hover:bg-gray-200 active:bg-gray-300"
+                className="p-1 px-3 text-2xl font-normal duration-100 border rounded-full hover:bg-gray-200 active:bg-gray-300"
               >
                 &#x2715;
               </button>
@@ -469,7 +589,7 @@ const SpaceDetailsTwo = () => {
               amenities.sort((a, b) => (a.creator_id !== 1 ? -1 : 1) - (b.creator_id !== 1 ? -1 : 1)).map((am) => (
                   <div
                     key={am.id}
-                    className="checkbox-container mb-4"
+                    className="mb-4 checkbox-container"
                   >
                     <input
                       type="checkbox"
@@ -485,7 +605,7 @@ const SpaceDetailsTwo = () => {
               amenities.filter((am) => (am.space_id === Number(spaceData.category)) || am.creator_id === Number(localStorage.getItem("user"))).sort((a, b) => (a.creator_id !== 1 ? -1 : 1) - (b.creator_id !== 1 ? -1 : 1)).map((am) => (
                 <div
                   key={am.id}
-                  className="checkbox-container mb-4"
+                  className="mb-4 checkbox-container"
                 >
                   <input
                     type="checkbox"
@@ -514,7 +634,7 @@ const SpaceDetailsTwo = () => {
               <button
                 type="button"
                 onClick={() => setAddAddonsPopup(false)}
-                className="rounded-full border p-1 px-3 text-2xl font-normal duration-100 hover:bg-gray-200 active:bg-gray-300"
+                className="p-1 px-3 text-2xl font-normal duration-100 border rounded-full hover:bg-gray-200 active:bg-gray-300"
               >
                 &#x2715;
               </button>
@@ -524,7 +644,7 @@ const SpaceDetailsTwo = () => {
               addons.sort((a, b) => (a.creator_id !== 1 ? -1 : 1) - (b.creator_id !== 1 ? -1 : 1)).map((addon) => (
                 <div
                   key={addon.id}
-                  className="checkbox-container mb-4"
+                  className="mb-4 checkbox-container"
                 >
                   <input
                     type="checkbox"
@@ -540,7 +660,7 @@ const SpaceDetailsTwo = () => {
               .map((addon) => (
                 <div
                   key={addon.id}
-                  className="checkbox-container mb-4"
+                  className="mb-4 checkbox-container"
                 >
                   <input
                     type="checkbox"
