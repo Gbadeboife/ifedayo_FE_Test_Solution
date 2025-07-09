@@ -182,7 +182,7 @@ const PropertyPage = () => {
         <div className="flex flex-col items-start gap-4 normal-case md:flex-row md:items-center">
           <h2 className="text-3xl font-semibold">{propertySpace.name ?? spaceData?.name}</h2>
           <button
-            className="whitespace-nowrap text-sm underline"
+            className="text-sm underline whitespace-nowrap"
             target="_blank"
             onClick={() => setShowMap(true)}
           >
@@ -235,7 +235,7 @@ const PropertyPage = () => {
           {spaceImages[3]?.photo_url &&
             <img
               src={spaceImages[3]?.photo_url}
-              className="h-1/2 rounded-lg object-cover md:w-full"
+              className="object-cover rounded-lg h-1/2 md:w-full"
             />
           }
         </div>
@@ -253,7 +253,7 @@ const PropertyPage = () => {
         </button>
       </div>
       <section className="relative flex flex-col items-start xl:flex-row xl:gap-12 lg:w-[90%] w-full mx-auto">
-        <div className="w-full md:px-0 xl:w-3/5 px-10">
+        <div className="w-full px-10 md:px-0 xl:w-3/5">
           <h3 className="mb-[8px] text-2xl font-semibold">Description</h3>
           <p className="">{propertySpace.description ?? spaceData?.description}</p>
           <hr className="my-[32px] md:my-[47px]" />
@@ -261,7 +261,7 @@ const PropertyPage = () => {
           <ul className="addons-grid list-disk-important">
             {spaceAmenities.map((am, idx) => (
               <li
-                className="flex w-fit items-center gap-2 mb-4 sm:mb-0"
+                className="flex items-center gap-2 mb-4 w-fit sm:mb-0"
                 key={idx}
               >
                 <CircleCheckIcon />
@@ -274,7 +274,7 @@ const PropertyPage = () => {
           <ul className="addons-grid list-disk-important">
             {spaceAddons.map((addon) => (
               <li
-                className="flex w-fit sm:w-full items-center gap-2 mb-4 sm:mb-0"
+                className="flex items-center gap-2 mb-4 w-fit sm:w-full sm:mb-0"
                 key={addon.id}
               >
                 <span className="w-fit">
@@ -321,7 +321,7 @@ const PropertyPage = () => {
               </Link>
             )}
           </div>
-          <p className="mt-4 block md:hidden">{propertySpace.about ?? spaceData?.about}</p>
+          <p className="block mt-4 md:hidden">{propertySpace.about ?? spaceData?.about}</p>
 
           <hr className="my-[32px] md:my-[47px]" />
           <div className="mb-[18px] flex items-center justify-between">
@@ -373,7 +373,7 @@ const PropertyPage = () => {
           <p className="mb-32">{propertySpace.rule ?? spaceData?.rule}</p>
         </div>
         <div className="sticky bottom-0 hidden w-full flex-grow bg-white xl:top-16 xl:bottom-[unset] xl:block xl:w-[unset] ml-24">
-          <div className="sticky-price-summary mx-auto max-w-2xl p-6 md:border-2">
+          <div className="max-w-2xl p-6 mx-auto sticky-price-summary md:border-2">
             <h3 className="mb-[8px] text-2xl font-semibold">Price and availability</h3>
             <div className="mb-[13px] flex justify-between">
               <span className="text-lg">Max capacity</span>
@@ -423,7 +423,7 @@ const PropertyPage = () => {
                 <button
                   type="button"
                   onClick={switchToCustomer}
-                  className="login-btn-gradient gap-2 rounded-sm py-3 px-2 text-center tracking-wide text-white outline-none focus:outline-none"
+                  className="gap-2 px-2 py-3 tracking-wide text-center text-white rounded-sm outline-none login-btn-gradient focus:outline-none"
                 >
                   Join as customer to book
                 </button>
@@ -431,7 +431,7 @@ const PropertyPage = () => {
                 <button
                   type="submit"
                   id="proceed-to-preview"
-                  className="login-btn-gradient gap-2 rounded-sm py-3 px-2 text-center tracking-wide text-white outline-none focus:outline-none"
+                  className="gap-2 px-2 py-3 tracking-wide text-center text-white rounded-sm outline-none login-btn-gradient focus:outline-none"
                   disabled={(() => {
                     const el = document.getElementById("booking-time");
                     return !(el && !el.innerText.includes("Select"));
@@ -443,7 +443,7 @@ const PropertyPage = () => {
             </form>
           </div>
         </div>
-        <div className="mx-auto -mt-16 block w-full max-w-xl p-6 xl:hidden">
+        <div className="block w-full max-w-xl p-6 mx-auto -mt-16 xl:hidden">
           <h3 className="mb-[8px] text-2xl font-semibold">Price and availability</h3>
           <div className="mb-[13px] flex justify-between">
             <span className="text-lg">Max capacity</span>
@@ -492,7 +492,7 @@ const PropertyPage = () => {
               <button
                 type="button"
                 onClick={switchToCustomer}
-                className="login-btn-gradient gap-2 rounded-sm py-3 px-2 text-center tracking-wide text-white outline-none focus:outline-none"
+                className="gap-2 px-2 py-3 tracking-wide text-center text-white rounded-sm outline-none login-btn-gradient focus:outline-none"
               >
                 Join as customer to book
               </button>
@@ -500,7 +500,7 @@ const PropertyPage = () => {
               <button
                 type="submit"
                 id="proceed-to-preview"
-                className="login-btn-gradient gap-2 rounded-sm py-3 px-2 text-center tracking-wide text-white outline-none focus:outline-none"
+                className="gap-2 px-2 py-3 tracking-wide text-center text-white rounded-sm outline-none login-btn-gradient focus:outline-none"
                 disabled={(() => {
                   const els = document.querySelectorAll("#booking-time");
                   return Array.from(els).every((el) => el.innerText.includes("Select"));

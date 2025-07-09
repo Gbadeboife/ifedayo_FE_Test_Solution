@@ -19,6 +19,42 @@ const DateTimePicker = ({ defaultDate, register, fieldNames, setValue, showCalen
     setShowCalendar(false);
   };
 
+  // Helper function to convert time string to minutes for comparison
+  const timeToMinutes = (timeStr) => {
+    if (!timeStr) return 0;
+    
+    // Handle format like "12:00 am", "01:00 pm"
+    const match = timeStr.match(/(\d+):(\d+)\s*(am|pm)/i);
+    if (!match) return 0;
+    
+    let hours = parseInt(match[1]);
+    const minutes = parseInt(match[2]);
+    const period = match[3].toLowerCase();
+    
+    // Convert to 24-hour format
+    if (period === 'pm' && hours !== 12) {
+      hours += 12;
+    } else if (period === 'am' && hours === 12) {
+      hours = 0;
+    }
+    
+    return hours * 60 + minutes;
+  };
+
+  // Helper function to check if a time slot conflicts with booked slots
+  const isSlotBooked = (slotTime, bookedSlots) => {
+    if (!bookedSlots || bookedSlots.length === 0) return false;
+    
+    const formattedDate = moment(selectedDate).format("MM/DD/YY");
+    const slotDateTime = new Date(formattedDate + " " + slotTime);
+    
+    return bookedSlots.some(bookedSlot => {
+      const bookedStart = new Date(bookedSlot.fromTime);
+      const bookedEnd = new Date(bookedSlot.toTime);
+      return slotDateTime >= bookedStart && slotDateTime < bookedEnd;
+    });
+  };
+
   return (
     <div
       className={showCalendar ? "popup-mobile z-50" : ""}
@@ -62,12 +98,12 @@ const DateTimePicker = ({ defaultDate, register, fieldNames, setValue, showCalen
               <button
                 type="button"
                 onClick={() => setShowCalendar(false)}
-                className="p-1 border hover:bg-gray-200 active:bg-gray-300 duration-100 px-3 text-2xl font-normal rounded-full"
+                className="p-1 px-3 text-2xl font-normal duration-100 border rounded-full hover:bg-gray-200 active:bg-gray-300"
               >
                 &#x2715;
               </button>
             </div>
-            <div className="flex md:flex-row flex-col">
+            <div className="flex flex-col md:flex-row">
               <div className="">
                 <Calendar
                   onChange={(newDate) => {
@@ -107,7 +143,7 @@ const DateTimePicker = ({ defaultDate, register, fieldNames, setValue, showCalen
                 </div>
               </div>
               <div className="p-2">
-                <p className="font-semibold mb-4 text-center">
+                <p className="mb-4 font-semibold text-center">
                   <span className="capitalize">{daysMapping[selectedDate.getDay()]}</span> , {fullMonthsMapping[selectedDate.getMonth()]} {selectedDate.getDate()}
                 </p>
                 <div className="flex flex-col gap-[12px] custom-calendar-scroll review-scroll overflow-y-auto overflow-x-hidden md:max-h-[270px] max-h-[150px] md:px-6 px-3 text-[#667085]">
@@ -139,6 +175,7 @@ const DateTimePicker = ({ defaultDate, register, fieldNames, setValue, showCalen
                             setTo("");
                             return;
                           }
+                          
                           if (from == "") {
                             setFrom(e.target.innerText);
                           } else {
@@ -151,6 +188,16 @@ const DateTimePicker = ({ defaultDate, register, fieldNames, setValue, showCalen
 
                           // disable if time is < current time
                           if (slotTime < new Date()) return true;
+
+                          // Fix for issue b: Disable slots that conflict with existing bookings
+                          if (isSlotBooked(tm, bookedSlots)) return true;
+
+                          // Fix for issue a: Disable "to" time slots that are before or equal to "from" time
+                          if (from !== "" && to === "") {
+                            const fromMinutes = timeToMinutes(from);
+                            const slotMinutes = timeToMinutes(tm);
+                            if (slotMinutes <= fromMinutes) return true;
+                          }
 
                           if (custom_slots.length > 0) {
                             var shouldDisable = false;
@@ -185,7 +232,7 @@ const DateTimePicker = ({ defaultDate, register, fieldNames, setValue, showCalen
                     );
                   })}
                 </div>
-                <div className="mt-8 px-6">
+                <div className="px-6 mt-8">
                   <button
                     type="button"
                     className="login-btn-gradient w-[152px] text-center py-[8px] rounded-sm text-white"
@@ -195,7 +242,7 @@ const DateTimePicker = ({ defaultDate, register, fieldNames, setValue, showCalen
                     Apply
                   </button>
                 </div>
-                <div className="md:hidden flex px-1 py-1 mt-2 cursor-default text-left">
+                <div className="flex px-1 py-1 mt-2 text-left cursor-default md:hidden">
                   <p className="min-w-[150px]">From - {from}</p>
                   <p>Until - {to}</p>
                 </div>

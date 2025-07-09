@@ -326,7 +326,7 @@ const BookingPreviewPage = () => {
         </div>
         <div className="w-full md:w-[40%]">
           <div className="flex flex-col rounded-md border border-[#33D4B7] p-[20px] md:border-2 md:p-[32px]">
-            <h4 className="text-lg mb-4 font-semibold md:text-2xl">Booking summary</h4>
+            <h4 className="mb-4 text-lg font-semibold md:text-2xl">Booking summary</h4>
 
             <hr className="mb-8" />
             <div className="tiny-scroll mb-4 max-h-[200px] overflow-y-auto pb-4 pr-4 md:max-h-[250px]">
@@ -371,7 +371,7 @@ const BookingPreviewPage = () => {
             </div>
             {/* {!(tax == null || commission == null) && (
               <ReCAPTCHA
-                className="recaptcha-v2 mb-2"
+                className="mb-2 recaptcha-v2"
                 sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
                 onChange={onChange}
               />
@@ -397,7 +397,7 @@ const BookingPreviewPage = () => {
                 <div className="flex justify-center gap-4">
                   {cards.length > 0 && (
                     <button
-                      className="rounded-lg border py-2 px-6 ring-2 ring-transparent duration-100 hover:border-transparent hover:ring-primary"
+                      className="px-6 py-2 duration-100 border rounded-lg ring-2 ring-transparent hover:border-transparent hover:ring-primary"
                       onClick={() => setExistingCardsModal(true)}
                     >
                       Use existing cards
@@ -405,7 +405,7 @@ const BookingPreviewPage = () => {
                   )}
 
                   <button
-                    className="rounded-lg border py-2 px-6 ring-2 ring-transparent duration-100 hover:border-transparent hover:ring-primary"
+                    className="px-6 py-2 duration-100 border rounded-lg ring-2 ring-transparent hover:border-transparent hover:ring-primary"
                     onClick={() => setNewCardPaymentModal(true)}
                   >
                     Pay with new card
@@ -413,7 +413,7 @@ const BookingPreviewPage = () => {
                 </div>
               </div>
             )} */}
-            <p className="text-center text-sm">(funds will be put on hold, pending when host accepts/rejects your booking)</p>
+            <p className="text-sm text-center">(funds will be put on hold, pending when host accepts/rejects your booking)</p>
           </div>
           <Link
             to="/help/cancellation-policy"

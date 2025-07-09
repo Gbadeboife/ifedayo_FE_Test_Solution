@@ -9,7 +9,7 @@ export default function CustomStaticLocationAutoCompleteV2({ type, control, name
   const { dispatch: globalDispatch, state: globalState } = useContext(GlobalContext);
   const [location, setLocation] = useState(globalState.location);
 
-  
+
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } = usePlacesService({
     apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
     options: { types: suggestionType ?? ["(region)"] },
@@ -21,7 +21,7 @@ export default function CustomStaticLocationAutoCompleteV2({ type, control, name
       className={`relative w-full normal-case z-100 ${containerClassName ?? ""}`}
       value={location}
     >
-      {!hideIcons && <LocationIcon />}
+      {/*!hideIcons && <LocationIcon />*/}
 
       <Combobox.Input
         {...restProps}
@@ -57,7 +57,7 @@ export default function CustomStaticLocationAutoCompleteV2({ type, control, name
         leaveTo="transform opacity-0 scale-95"
       >
         {isPlacePredictionsLoading ? (
-          <div className="absolute left-0 right-0 top-full z-50 mt-2 flex w-full origin-top justify-center rounded-xl border bg-white py-8">
+          <div className="absolute left-0 right-0 z-50 flex justify-center w-full py-8 mt-2 origin-top bg-white border top-full rounded-xl">
             <svg
               style={{ margin: "auto", background: "none", display: "block", shapeRendering: "auto" }}
               width="36px"
@@ -91,7 +91,7 @@ export default function CustomStaticLocationAutoCompleteV2({ type, control, name
           >
             {placePredictions.map((place, idx) => (
               <Combobox.Option
-                className="flex w-full items-center truncate rounded-pill px-3 py-3 pr-5 text-sm ui-active:bg-gray-100 ui-active:text-black ui-not-active:text-gray-800"
+                className="flex items-center w-full px-3 py-3 pr-5 text-sm truncate rounded-pill ui-active:bg-gray-100 ui-active:text-black ui-not-active:text-gray-800"
                 key={idx}
                 value={place.structured_formatting.main_text}
                 onClick={() => 

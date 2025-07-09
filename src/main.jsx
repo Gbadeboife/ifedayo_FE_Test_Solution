@@ -1507,9 +1507,9 @@ function Main() {
       {
         selector: '.first-step',
         content: ({ goTo, inDOM, setCurrentStep, isHighlightingObserved }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px] text-start">Navigate to the Profile menu</p>
-            <span className="font-semibold text-sm mt-1">From the profile menu, users can manage their profile, view bookings, message hosts, view reviews, manage payments and billing information.</span>
+            <span className="mt-1 text-sm font-semibold">From the profile menu, users can manage their profile, view bookings, message hosts, view reviews, manage payments and billing information.</span>
             <button onClick={() => setCurrentStep(1)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
           </div>
         ),
@@ -1529,10 +1529,10 @@ function Main() {
       {
         selector: '[data-tour="photo-step"]',
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
-            <span className="font-semibold text-sm mt-1">Upload your photo. All photos are subject to approval. For further questions, please visit our <Link className="underline text-blue-500" to="/faq">FAQs</Link> or
-              <Link className="underline text-blue-500" to="/help/terms_and_conditions">User Agreement page.</Link></span>
-            <div className="flex justify-start gap-4 w-full">
+          <div className="flex flex-col items-center justify-center">
+            <span className="mt-1 text-sm font-semibold">Upload your photo. All photos are subject to approval. For further questions, please visit our <Link className="text-blue-500 underline" to="/faq">FAQs</Link> or
+              <Link className="text-blue-500 underline" to="/help/terms_and_conditions">User Agreement page.</Link></span>
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() =>
                 setCurrentStep(0)
               } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
@@ -1562,9 +1562,9 @@ function Main() {
       {
         selector: '[data-tour="profile-step"]',
         content: ({ setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
-            <span className="font-semibold text-sm mt-1">Complete your About Me and include information about yourself and/or your company.</span>
-            <div className="flex justify-start gap-4 w-full">
+          <div className="flex flex-col items-center justify-center">
+            <span className="mt-1 text-sm font-semibold">Complete your About Me and include information about yourself and/or your company.</span>
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() =>
                 setCurrentStep(1)
               } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
@@ -1591,9 +1591,9 @@ function Main() {
       {
         selector: '[data-tour="email-step"]',
         content: ({ setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
-            <span className="font-semibold text-sm mt-1">Enable or disable Email Alerts for Site Activity if you want to be alerted via email on all site actions.</span>
-            <div className="flex justify-start gap-4 w-full">
+          <div className="flex flex-col items-center justify-center">
+            <span className="mt-1 text-sm font-semibold">Enable or disable Email Alerts for Site Activity if you want to be alerted via email on all site actions.</span>
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() =>
                 setCurrentStep(2)
               } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
@@ -1623,10 +1623,10 @@ function Main() {
           position: "center"
         },
         content: ({ goTo, inDOM, setCurrentStep, transition }) => (
-          <div className="flex justify-center items-center flex-col">
-            <p className="font-semibold text-sm">Click on Get Verified to submit your identity for verification.</p>
-            <div className="flex justify-start gap-4 w-full">
-              <div className="flex justify-start gap-4 w-full">
+          <div className="flex flex-col items-center justify-center">
+            <p className="text-sm font-semibold">Click on Get Verified to submit your identity for verification.</p>
+            <div className="flex justify-start w-full gap-4">
+              <div className="flex justify-start w-full gap-4">
                 <button
                   onClick={() => setCurrentStep(3)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
                 <button onClick={() => {
@@ -1655,10 +1655,10 @@ function Main() {
       {
         selector: '[data-tour="fifth-step"]',
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Select and Upload a Government issued ID or Passport.</p>
-            <span className="font-semibold text-sm mt-1">Identification is subject to approval. The image must be current, legible and expiration date must be valid. For further questions, please review our <Link className="underline text-blue-500" to="/help/terms_and_conditions">User Agreement</Link>.</span>
-            <div className="flex justify-start gap-4 w-full">
+            <span className="mt-1 text-sm font-semibold">Identification is subject to approval. The image must be current, legible and expiration date must be valid. For further questions, please review our <Link className="text-blue-500 underline" to="/help/terms_and_conditions">User Agreement</Link>.</span>
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() =>
                 setCurrentStep(4)
               } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
@@ -1686,7 +1686,7 @@ function Main() {
       {
         selector: "",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
 
           </div>
         ),
@@ -1709,9 +1709,9 @@ function Main() {
         selector: ".tenth-step",
         content: ({ goTo, inDOM, setCurrentStep }) => {
           return (
-            <div className="flex justify-center items-center flex-col">
+            <div className="flex flex-col items-center justify-center">
               <p className="font-semibold text-[18px]">Under Billing, please add your payment and payout methods</p>
-              <div className="flex justify-start gap-4 w-full">
+              <div className="flex justify-start w-full gap-4">
                 <button onClick={() => setCurrentStep(6)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
                 <button onClick={() => {
                   setCurrentStep(8)
@@ -1736,11 +1736,11 @@ function Main() {
       {
         selector: ".twelfth-step",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Under Payments, view your payment history</p>
-            <span className="font-semibold text-sm mt-1">Payments you’ve received from Customers after bookings are completed.</span>
-            {/* <span className="font-semibold text-sm mt-1">Once approved, you will receive an email with approval confirmation from our support team and your account will be activated. For questions or concerns, please navigate to the <Link className="underline text-blue-500" to="/faq">FAQs</Link> page.</span> */}
-            <div className="flex justify-start gap-4 w-full">
+            <span className="mt-1 text-sm font-semibold">Payments you’ve received from Customers after bookings are completed.</span>
+            {/* <span className="mt-1 text-sm font-semibold">Once approved, you will receive an email with approval confirmation from our support team and your account will be activated. For questions or concerns, please navigate to the <Link className="text-blue-500 underline" to="/faq">FAQs</Link> page.</span> */}
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(7)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => setCurrentStep(9)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
             </div>
@@ -1757,10 +1757,10 @@ function Main() {
       {
         selector: ".thirteenth-step",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">See reviews given by your customers</p>
-            {/* <span className="font-semibold text-sm mt-1">Once approved, you will receive an email with approval confirmation from our support team and your account will be activated. For questions or concerns, please navigate to the <Link className="underline text-blue-500" to="/faq">FAQs</Link> page.</span> */}
-            <div className="flex justify-start gap-4 w-full">
+            {/* <span className="mt-1 text-sm font-semibold">Once approved, you will receive an email with approval confirmation from our support team and your account will be activated. For questions or concerns, please navigate to the <Link className="text-blue-500 underline" to="/faq">FAQs</Link> page.</span> */}
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(8)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => setCurrentStep(10)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
             </div>
@@ -1789,9 +1789,9 @@ function Main() {
       {
         selector: ".seventeen-step",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Manage all bookings made for your space</p>
-            <div className="flex justify-start gap-4 w-full">
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(9)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => setCurrentStep(11)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
             </div>
@@ -1815,10 +1815,10 @@ function Main() {
       {
         selector: ".nineteen-step",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Chat with your customers</p>
-            <span className="font-semibold text-sm mt-1">You will be notified via email when new messages are received.</span>
-            <div className="flex justify-start gap-4 w-full">
+            <span className="mt-1 text-sm font-semibold">You will be notified via email when new messages are received.</span>
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(10)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => setCurrentStep(12)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
             </div>
@@ -1841,9 +1841,9 @@ function Main() {
       {
         selector: ".fourteen-step",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Add a new space</p>
-            <div className="flex justify-start gap-4 w-full">
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(11)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => setCurrentStep(13)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
             </div>
@@ -1871,9 +1871,9 @@ function Main() {
       {
         selector: ".fifteen-step",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Input details of your space</p>
-            <div className="flex justify-start gap-4 w-full">
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(12)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => setCurrentStep(14)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
             </div>
@@ -1889,9 +1889,9 @@ function Main() {
       {
         selector: ".eighteen-step-imag",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Add Images, Addons, Amenities, Faqs for your space</p>
-            <div className="flex justify-start gap-4 w-full">
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(13)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => setCurrentStep(15)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
             </div>
@@ -1915,10 +1915,10 @@ function Main() {
       {
         selector: ".eighteen-step-schedul",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Add available slots for your space</p>
-            <span className="font-semibold text-sm mt-1">Customize and maintain the available slots for your space.</span>
-            <div className="flex justify-start gap-4 w-full">
+            <span className="mt-1 text-sm font-semibold">Customize and maintain the available slots for your space.</span>
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(14)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => setCurrentStep(16)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
             </div>
@@ -1934,10 +1934,10 @@ function Main() {
       {
         selector: ".eighteen-step-summary",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Review your space details</p>
-            <span className="font-semibold text-sm mt-1">Review the final details for your space for approval and posting.</span>
-            <div className="flex justify-start gap-4 w-full">
+            <span className="mt-1 text-sm font-semibold">Review the final details for your space for approval and posting.</span>
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(15)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => setCurrentStep(17)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
             </div>
@@ -1953,10 +1953,10 @@ function Main() {
       {
         selector: ".sixteen-step",
         content: ({ goTo, inDOM, setCurrentStep }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Submit your space for admin approval</p>
-            <span className="font-semibold text-sm mt-1">Once approved, you will receive an email with approval confirmation from our support team and your account will be activated. For questions or concerns, please navigate to the <Link className="underline text-blue-500" to="/faq">FAQs</Link> page.</span>
-            <div className="flex justify-start gap-4 w-full">
+            <span className="mt-1 text-sm font-semibold">Once approved, you will receive an email with approval confirmation from our support team and your account will be activated. For questions or concerns, please navigate to the <Link className="text-blue-500 underline" to="/faq">FAQs</Link> page.</span>
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(16)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => setCurrentStep(18)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
             </div>
@@ -1980,7 +1980,7 @@ function Main() {
       {
         selector: "last_step",
         content: ({ goTo, inDOM, setIsOpen }) => (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <button onClick={() => { endTour(); setIsOpen(false); setCurrentStep(0) }} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Done! You can now add your space ready</button>
           </div>
         ),
@@ -1996,9 +1996,9 @@ function Main() {
     {
       selector: '.first-step',
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
+        <div className="flex flex-col items-center justify-center">
           <p className="font-semibold text-[18px] text-start">Navigate to the Profile menu</p>
-          <span className="font-semibold text-sm mt-1">From the profile menu, users can manage their profile, view bookings, message hosts, view reviews, manage payments and billing information.</span>
+          <span className="mt-1 text-sm font-semibold">From the profile menu, users can manage their profile, view bookings, message hosts, view reviews, manage payments and billing information.</span>
           <button onClick={() => setCurrentStep(1)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
         </div>
       ),
@@ -2015,10 +2015,10 @@ function Main() {
     {
       selector: '[data-tour="photo-step"]',
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
-          <span className="font-semibold text-sm mt-1">Upload your photo. All photos are subject to approval. For further questions, please visit our <Link className="underline text-blue-500" to="/faq">FAQs</Link> or
-            <Link className="underline text-blue-500" to="/help/terms_and_conditions">User Agreement page.</Link></span>
-          <div className="flex justify-start gap-4 w-full">
+        <div className="flex flex-col items-center justify-center">
+          <span className="mt-1 text-sm font-semibold">Upload your photo. All photos are subject to approval. For further questions, please visit our <Link className="text-blue-500 underline" to="/faq">FAQs</Link> or
+            <Link className="text-blue-500 underline" to="/help/terms_and_conditions">User Agreement page.</Link></span>
+          <div className="flex justify-start w-full gap-4">
             <button onClick={() =>
               setCurrentStep(0)
             } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
@@ -2048,9 +2048,9 @@ function Main() {
     {
       selector: '[data-tour="profile-step"]',
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
-          <span className="font-semibold text-sm mt-1">Complete your About Me and include information about yourself.</span>
-          <div className="flex justify-start gap-4 w-full">
+        <div className="flex flex-col items-center justify-center">
+          <span className="mt-1 text-sm font-semibold">Complete your About Me and include information about yourself.</span>
+          <div className="flex justify-start w-full gap-4">
             <button onClick={() =>
 
               setCurrentStep(1)
@@ -2079,9 +2079,9 @@ function Main() {
     {
       selector: '[data-tour="email-step"]',
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
-          <span className="font-semibold text-sm mt-1">Enable or disable Email Alerts for Site Activity if you want to be alerted via email on all site actions.</span>
-          <div className="flex justify-start gap-4 w-full">
+        <div className="flex flex-col items-center justify-center">
+          <span className="mt-1 text-sm font-semibold">Enable or disable Email Alerts for Site Activity if you want to be alerted via email on all site actions.</span>
+          <div className="flex justify-start w-full gap-4">
             <button onClick={() =>
               setCurrentStep(2)
             } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
@@ -2108,10 +2108,10 @@ function Main() {
     {
       selector: '[data-tour="fourth-step"]',
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
-          <p className="font-semibold text-sm">Click on Get Verified to submit your identity for verification.</p>
-          <div className="flex justify-start gap-4 w-full">
-            <div className="flex justify-start gap-4 w-full">
+        <div className="flex flex-col items-center justify-center">
+          <p className="text-sm font-semibold">Click on Get Verified to submit your identity for verification.</p>
+          <div className="flex justify-start w-full gap-4">
+            <div className="flex justify-start w-full gap-4">
               <button
                 onClick={() => setCurrentStep(3)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() =>
@@ -2138,10 +2138,10 @@ function Main() {
     {
       selector: '[data-tour="fifth-step"]',
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
+        <div className="flex flex-col items-center justify-center">
           <p className="font-semibold text-[18px]">Select and Upload a Government issued ID or Passport.</p>
-          <span className="font-semibold text-sm mt-1">Identification is subject to approval. The image must be current, legible and expiration date must be valid. For further questions, please review our <Link className="underline text-blue-500" to="/help/terms_and_conditions">User Agreement</Link>.</span>
-          <div className="flex justify-start gap-4 w-full">
+          <span className="mt-1 text-sm font-semibold">Identification is subject to approval. The image must be current, legible and expiration date must be valid. For further questions, please review our <Link className="text-blue-500 underline" to="/help/terms_and_conditions">User Agreement</Link>.</span>
+          <div className="flex justify-start w-full gap-4">
             <button onClick={() =>
               setCurrentStep(4)
             } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
@@ -2171,7 +2171,7 @@ function Main() {
     {
       selector: "",
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
+        <div className="flex flex-col items-center justify-center">
         </div>
       ),
       styles: {
@@ -2193,9 +2193,9 @@ function Main() {
       selector: ".tenth-step",
       content: ({ goTo, inDOM, setCurrentStep }) => {
         return (
-          <div className="flex justify-center items-center flex-col">
+          <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Under Billing, please add your payment methods</p>
-            <div className="flex justify-start gap-4 w-full">
+            <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(6)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
               <button onClick={() => {
                 setCurrentStep(8)
@@ -2222,10 +2222,10 @@ function Main() {
     {
       selector: ".twelfth-step",
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
+        <div className="flex flex-col items-center justify-center">
           <p className="font-semibold text-[18px]">Under Payments, view your payment history</p>
-          <span className="font-semibold text-sm mt-1">	Payments you’ve made after bookings are completed.</span>
-          <div className="flex justify-start gap-4 w-full">
+          <span className="mt-1 text-sm font-semibold">	Payments you’ve made after bookings are completed.</span>
+          <div className="flex justify-start w-full gap-4">
             <button onClick={() => setCurrentStep(7)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
             <button onClick={() => setCurrentStep(9)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
           </div>
@@ -2242,9 +2242,9 @@ function Main() {
     {
       selector: ".thirteenth-step",
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
+        <div className="flex flex-col items-center justify-center">
           <p className="font-semibold text-[18px]">View your review history</p>
-          <div className="flex justify-start gap-4 w-full">
+          <div className="flex justify-start w-full gap-4">
             <button onClick={() => setCurrentStep(8)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
             <button onClick={() => setCurrentStep(10)}
               className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
@@ -2267,9 +2267,9 @@ function Main() {
     {
       selector: ".seventeen-step",
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
+        <div className="flex flex-col items-center justify-center">
           <p className="font-semibold text-[18px]">View your booking history</p>
-          <div className="flex justify-start items-center gap-4 w-full">
+          <div className="flex items-center justify-start w-full gap-4">
             <button onClick={() => setCurrentStep(9)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
             <button onClick={() => setCurrentStep(11)}
               className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
@@ -2286,10 +2286,10 @@ function Main() {
     {
       selector: ".nineteen-step",
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
+        <div className="flex flex-col items-center justify-center">
           <p className="font-semibold text-[18px]">View and manage your messages with your hosts</p>
-          <span className="font-semibold text-sm mt-1">You will be notified via email when new messages are received.</span>
-          <div className="flex justify-start gap-4 w-full">
+          <span className="mt-1 text-sm font-semibold">You will be notified via email when new messages are received.</span>
+          <div className="flex justify-start w-full gap-4">
             <button onClick={() => setCurrentStep(10)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
             <button onClick={() => setCurrentStep(12)}
               className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
@@ -2313,7 +2313,7 @@ function Main() {
     {
       selector: "last_step",
       content: ({ goTo, inDOM, setIsOpen, setCurrentStep }) => (
-        <div className="flex justify-center items-center flex-col">
+        <div className="flex flex-col items-center justify-center">
           <button onClick={() => { endTour(); setIsOpen(false); setCurrentStep(0) }} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Done! You are ready to search and book your new space</button>
         </div>
       ),

@@ -280,18 +280,18 @@ export default function LoginPage() {
           />
         </Link>
       </header>
-      <div className="flex min-h-screen w-full justify-center">
-        <section className="flex w-full flex-col items-center justify-center bg-white md:w-1/2">
+      <div className="flex justify-center w-full min-h-screen">
+        <section className="flex flex-col items-center justify-center w-full bg-white md:w-1/2">
           <form
-            className="flex w-full max-w-md flex-col px-6"
+            className="flex flex-col w-full max-w-md px-6"
             onSubmit={handleSubmit(onSubmit)}
             autoComplete="off"
           >
-            <h1 className="mb-8 text-center text-3xl font-semibold md:text-5xl md:font-bold">Log In</h1>
+            <h1 className="mb-8 text-3xl font-semibold text-center md:text-5xl md:font-bold">Log In</h1>
             <input
               type="text"
               autoComplete="off"
-              className="mb-8 resize-none rounded-sm border-2 bg-transparent p-2 px-4 focus:outline-none active:outline-none"
+              className="p-2 px-4 mb-8 bg-transparent border-2 rounded-sm resize-none focus:outline-none active:outline-none"
               {...register("email", {
                 onChange: (e) => {
                   if (disableEmails.includes(e.target.value.toLowerCase())) {
@@ -303,12 +303,12 @@ export default function LoginPage() {
               })}
               placeholder="Email"
             />
-            <div className="relative mb-4 flex items-center justify-between rounded-sm border-2 bg-transparent">
+            <div className="relative flex items-center justify-between mb-4 bg-transparent border-2 rounded-sm">
               <input
                 autoComplete={showPassword ? "off" : "new-password"}
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
-                className="flex-grow border-0 p-2 px-4 focus:outline-none active:outline-none "
+                className="flex-grow p-2 px-4 border-0 focus:outline-none active:outline-none "
                 placeholder="Password"
               />{" "}
               <button
@@ -321,20 +321,20 @@ export default function LoginPage() {
                   <img
                     src="/show.png"
                     alt=""
-                    className="m-2 w-6"
+                    className="w-6 m-2"
                   />
                 ) : (
                   <img
                     src="/invisible.png"
                     alt=""
-                    className="m-2 w-6"
+                    className="w-6 m-2"
                   />
                 )}
               </button>
             </div>
             <Link
               to={"/request-reset?role=" + role}
-              className="my-text-gradient mb-6 self-end text-sm font-semibold"
+              className="self-end mb-6 text-sm font-semibold my-text-gradient"
             >
               Forgot Password
             </Link>
@@ -353,7 +353,7 @@ export default function LoginPage() {
               Continue
             </LoadingButton>
           </form>
-          <div className="hr my-6 text-center">OR</div>
+          <div className="my-6 text-center hr">OR</div>
           <div className="oauth flex w-full max-w-md flex-col gap-4 px-6 text-[#344054]">
             <button
               onClick={() => handleGoogleLogin()}
@@ -386,20 +386,20 @@ export default function LoginPage() {
               <span>Sign in With Apple</span>
             </button>
             <div>
-              <h3 className="mb-2 text-center text-sm normal-case text-gray-800">
+              <h3 className="mb-2 text-sm text-center text-gray-800 normal-case">
                 Don't have an account?{" "}
                 <Link
                   to={"/signup"}
-                  className="my-text-gradient mb-8 self-end text-sm font-semibold"
+                  className="self-end mb-8 text-sm font-semibold my-text-gradient"
                 >
                   Sign up
                 </Link>{" "}
               </h3>
-              <h3 className="text-center text-sm normal-case text-gray-800">
+              <h3 className="text-sm text-center text-gray-800 normal-case">
                 Account issues? Please visit our{" "}
                 <Link
                   to={"/faq"}
-                  className="my-text-gradient mb-8 self-end text-sm font-semibold"
+                  className="self-end mb-8 text-sm font-semibold my-text-gradient"
                 >
                   FAQ page
                 </Link>{" "}

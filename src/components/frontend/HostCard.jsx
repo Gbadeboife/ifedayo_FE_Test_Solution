@@ -14,7 +14,8 @@ const HostCard = ({ data }) => {
   const fetchUser = async () => {
     sdk.setTable("user")
     const users = await sdk.getAllUsers()
-    let host_user = users?.find(user => user.id == data.id)
+    console.log(users.list)
+    let host_user = users?.list.find(user => user.id == data.id)
     setUser(host_user)
   }
   
@@ -32,15 +33,15 @@ const HostCard = ({ data }) => {
         className="rounded-full cursor-pointer md:w-[80px] md:h-[80px] w-[60px] h-[60px] object-cover"
       />
       <div className="px-[12px]">
-        <h4 className="md:text-2xl text-lg font-semibold">
+        <h4 className="text-lg font-semibold md:text-2xl">
           {data.first_name || <Skeleton />} {data.last_name}
         </h4>
         <div className="flex items-center">
           <p className="text-gray-500 mb-[6px]">{data?.city && data?.city}</p>
           <p className="text-gray-500 mb-[6px]">{data?.country &&  ", " + data?.country}</p>
         </div>
-        <div className="flex justify-between items-end lowercase">
-          <p className="flex gap-2 items-center">
+        <div className="flex items-end justify-between lowercase">
+          <p className="flex items-center gap-2">
             <StarIcon />
             <span>
               {(Number(data.avg_host_rating) || 0).toFixed(1)}
