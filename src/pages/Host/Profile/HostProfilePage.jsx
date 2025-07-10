@@ -18,6 +18,8 @@ import EditAboutModal from "@/components/Profile/EditAboutModal";
 import { parseJsonSafely } from "@/utils/utils";
 import EnableEmailDialog from "@/components/Profile/EnableEmailDialog";
 import DeleteAccountModal from "@/components/Profile/DeleteAccountModal";
+import RemoveProfilePictureModal from "@/components/Profile/RemoveProfilePictureModal";
+import ImagePreviewModal from "@/components/Profile/ImagePreviewModal";
 
 function getProfilePhotoMessage(image_status) {
   switch (image_status) {
@@ -38,6 +40,9 @@ export default function HostProfilePage() {
   const [twoFa, setTwoFa] = useState(false);
   const [twoFaDialog, setTwoFaDialog] = useState(false);
   const [enableEmailDialog, setEnableEmailDialog] = useState(false);
+  const [removeProfileModal, setRemoveProfileModal] = useState(false);
+  const [imagePreviewModal, setImagePreviewModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const [updatePassword, setUpdatePassword] = useState(false);
 
@@ -50,6 +55,14 @@ export default function HostProfilePage() {
   const [deleteAccountModal, setDeleteAccountModal] = useState(false);
 
   let sdk = new MkdSDK();
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setImagePreviewModal(true);
+    }
+  };
 
   const changeProfilePic = async (e) => {
     globalDispatch({ type: "START_LOADING" });
@@ -88,6 +101,8 @@ export default function HostProfilePage() {
         },
         "POST",
       );
+      setImagePreviewModal(false);
+      setSelectedFile(null);
     } catch (err) {
       globalDispatch({
         type: "SHOW_ERROR",
@@ -115,6 +130,7 @@ export default function HostProfilePage() {
         "",
       );
       globalDispatch({ type: "SET_USER_DATA", payload: { ...globalState.user, photo: null, is_photo_approved: null } });
+      setRemoveProfileModal(false);
     } catch (err) {
       globalDispatch({
         type: "SHOW_ERROR",
@@ -124,6 +140,17 @@ export default function HostProfilePage() {
         },
       });
     }
+  };
+
+  const handleImagePreviewConfirm = () => {
+    if (selectedFile) {
+      const event = { target: { files: [selectedFile] } };
+      changeProfilePic(event);
+    }
+  };
+
+  const handleRemoveConfirm = () => {
+    removeProfilePic();
   };
 
   async function changeTwoFa() {
@@ -188,13 +215,14 @@ export default function HostProfilePage() {
                   type="file"
                   className="hidden"
                   id="profilePic"
-                  onChange={changeProfilePic}
+                  accept="image/*"
+                  onChange={handleFileSelect}
                 />
               </label>
               <button
                 className="underline"
                 id="remove_profile_pic"
-                onClick={removeProfilePic}
+                onClick={() => setRemoveProfileModal(true)}
               >
                 Remove
               </button>
@@ -298,6 +326,24 @@ export default function HostProfilePage() {
       <EnableEmailDialog
         isOpen={enableEmailDialog}
         closeModal={() => setEnableEmailDialog(false)}
+      />
+      
+      <RemoveProfilePictureModal
+        isOpen={removeProfileModal}
+        closeModal={() => setRemoveProfileModal(false)}
+        onConfirm={handleRemoveConfirm}
+        loading={loading}
+      />
+      
+      <ImagePreviewModal
+        isOpen={imagePreviewModal}
+        closeModal={() => {
+          setImagePreviewModal(false);
+          setSelectedFile(null);
+        }}
+        selectedFile={selectedFile}
+        onConfirm={handleImagePreviewConfirm}
+        loading={loading}
       />
     </div>
   );
