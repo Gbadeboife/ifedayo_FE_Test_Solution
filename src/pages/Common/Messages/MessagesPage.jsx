@@ -350,16 +350,78 @@ const MessagesPage = () => {
 
   async function archiveRoom(id) {
     sdk.setTable("room");
-    // call API - callRestAPI (You can see callRestAPI implementation in other functions) here to archive room chat. Method is PUT
-    // update archived state of selected room chat without refreshing the page and toast a success message
-    //Also switch to the archive tab on success of the API, with the archived room chat showing under there
+    try {
+      const result = await sdk.callRestAPI({ id, is_archive: 1 }, "PUT");
+      if (!result.error) {
+        // Update the room's archive status in the rooms array
+        setRooms((prev) => {
+          const copy = [...prev];
+          const roomIndex = copy.findIndex((room) => room.id === id);
+          if (roomIndex !== -1) {
+            copy[roomIndex] = { ...copy[roomIndex], is_archive: 1 };
+          }
+          return copy;
+        });
+
+        // Update active room if it's the one being archived
+        if (activeRoom.id === id) {
+          setActiveRoom((prev) => ({ ...prev, is_archive: 1 }));
+        }
+
+        // Switch to archive tab
+        searchParams.set("message_tab", "archive");
+        setSearchParams(searchParams);
+
+        // Show success message
+        showToast(globalDispatch, "Chat archived successfully", 3000, "SUCCESS");
+      }
+    } catch (err) {
+      globalDispatch({
+        type: "SHOW_ERROR",
+        payload: {
+          heading: "Archive failed",
+          message: err.message,
+        },
+      });
+    }
   }
 
   async function unArchiveRoom(id) {
     sdk.setTable("room");
-    // call API - callRestAPI (You can see callRestAPI implementation in other functions) here to unarchive room chat. Method is PUT
-    // update unarchived state of selected room chat without refreshing the page and toast a success message
-    //Also switch to the inbox tab on success of the API, with the unarchived room chat showing under there
+    try {
+      const result = await sdk.callRestAPI({ id, is_archive: 0 }, "PUT");
+      if (!result.error) {
+        // Update the room's archive status in the rooms array
+        setRooms((prev) => {
+          const copy = [...prev];
+          const roomIndex = copy.findIndex((room) => room.id === id);
+          if (roomIndex !== -1) {
+            copy[roomIndex] = { ...copy[roomIndex], is_archive: 0 };
+          }
+          return copy;
+        });
+
+        // Update active room if it's the one being unarchived
+        if (activeRoom.id === id) {
+          setActiveRoom((prev) => ({ ...prev, is_archive: 0 }));
+        }
+
+        // Switch to inbox tab
+        searchParams.set("message_tab", "inbox");
+        setSearchParams(searchParams);
+
+        // Show success message
+        showToast(globalDispatch, "Chat moved to inbox successfully", 3000, "SUCCESS");
+      }
+    } catch (err) {
+      globalDispatch({
+        type: "SHOW_ERROR",
+        payload: {
+          heading: "Unarchive failed",
+          message: err.message,
+        },
+      });
+    }
   }
 
   async function fetchExtraBookingDetails() {
@@ -648,8 +710,8 @@ const MessagesPage = () => {
         onClick={() => setShowEmoji(false)}
       >
         <div className="w-full md:w-[26%]">
-          <div className="flex h-full flex-col">
-            <div className="flex border-b border-t nineteen-step">
+          <div className="flex flex-col h-full">
+            <div className="flex border-t border-b nineteen-step">
               <button
                 className={`${searchParams.get("message_tab") != "archive" ? "border-b-2 border-black font-semibold text-black" : ""} flex-grow px-[] py-[12px] text-[]`}
                 onClick={() => {
@@ -732,7 +794,7 @@ const MessagesPage = () => {
         </div>
         
         <div className={`${(mobilePreviewOpen && messages[activeRoom.id].length > 0 && !fetchingExtra) ? "block" : "hidden"} absolute top-0 right-0 -left-0 overflow-y-hidden bg-white md:static md:block md:max-h-[unset] md:w-[48%]`}>
-          <div className="flex h-full flex-col border-t">
+          <div className="flex flex-col h-full border-t">
             {activeRoom?.id ? (
               <>
                 <div className={`${mobileChatSection ? "md:hidden" : "hidden"} pl-2`}>
@@ -744,23 +806,23 @@ const MessagesPage = () => {
                     }}
                     className="mr-2 mb-2 inline-flex items-center py-2.5 pr-5 text-center text-sm font-semibold"
                   >
-                    <ArrowLeftIcon className="h-6 w-6" />
+                    <ArrowLeftIcon className="w-6 h-6" />
                     <span className="ml-2">Back</span>
                   </button>
                 </div>
                 <div className="flex justify-between border-b py-[13px] px-2 md:px-4">
-                  <h3 className="md:text-lg text-base font-semibold">Chat with {activeRoom?.first_name === undefined ? rooms[0]?.user?.first_name : activeRoom?.first_name + " " + activeRoom?.last_name === undefined ? rooms[0]?.user?.last_name : activeRoom?.last_name}</h3>
+                  <h3 className="text-base font-semibold md:text-lg">Chat with {activeRoom?.first_name === undefined ? rooms[0]?.user?.first_name : activeRoom?.first_name + " " + activeRoom?.last_name === undefined ? rooms[0]?.user?.last_name : activeRoom?.last_name}</h3>
                   {mobileChatSection && activeRoom.booking_id && (
                     <button
                       onClick={() => setMobilePreviewOpen(true)}
-                      className="inline whitespace-nowrap bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-xs font-bold text-transparent md:hidden"
+                      className="inline text-xs font-bold text-transparent whitespace-nowrap bg-gradient-to-r from-primary to-primary-dark bg-clip-text md:hidden"
                     >
                       Preview booking
                     </button>
                   )}
                 </div>
 
-              <div className="h-full w-full overflow-x-hidden relative hidden-scrollbar">
+              <div className="relative w-full h-full overflow-x-hidden hidden-scrollbar">
                 <div className="h-[90%] z-10 pb-12 md:pb-0 overflow-auto">
                 <MessagesContainer
                   messageErr={messageErr}
@@ -769,7 +831,7 @@ const MessagesPage = () => {
                 </div>
 
                 <div className="fixed z- md:absolute bottom-0 w-full overflow-hidden flex h-fit bottom-0 justify-start items-center gap-4 border border-r-0 border-l-0 bg-white px-[20px] py-[12px]">
-                    <div className="flex flex-gro items-center gap-2">
+                    <div className="flex items-center gap-2 flex-gro">
                       <label
                       onClick={()=>{([BOOKING_STATUS.PENDING, BOOKING_STATUS.COMPLETED, BOOKING_STATUS.DELETED, BOOKING_STATUS.DECLINED, BOOKING_STATUS.CANCELLED].includes(activeBooking.status) || !activeBooking.status) ? showToast(globalDispatch, "Without a booking, you can’t send images or emojis.", 4000, "ERROR") : showImageModal()}}
                       className={`cursor-pointer ${activeBooking?.status != BOOKING_STATUS.COMPLETED ? "strike-opacity-50 pointer-events-non opacity-50" : ""}`}
@@ -783,7 +845,7 @@ const MessagesPage = () => {
                           e.stopPropagation();
                           setShowEmoji(!showEmoji);
                         }}
-                        className="strike-opacity-50 relative disabled:opacity-50"
+                        className="relative strike-opacity-50 disabled:opacity-50"
                       >
                         <SmileIcon />
                       </button>
@@ -811,7 +873,7 @@ const MessagesPage = () => {
                       >
                         {sending ? (
                           <svg
-                            className="inline h-4 w-4 animate-spin text-primary"
+                            className="inline w-4 h-4 animate-spin text-primary"
                             fill="none"
                             viewBox="0 0 24 24"
                           >
@@ -830,7 +892,7 @@ const MessagesPage = () => {
                             ></path>
                           </svg>
                         ) : (
-                          <PaperAirplaneIcon className="h-5 w-5 -rotate-45" />
+                          <PaperAirplaneIcon className="w-5 h-5 -rotate-45" />
                         )}
                       </button>
                     </form>
@@ -839,7 +901,7 @@ const MessagesPage = () => {
 
               </>
             ) : (
-              <div className="flex flex-grow items-center justify-center text-4xl text-gray-700 ">Select a chat to view</div>
+              <div className="flex items-center justify-center flex-grow text-4xl text-gray-700 ">Select a chat to view</div>
             )}
           </div>
         </div>
@@ -859,13 +921,13 @@ const MessagesPage = () => {
                 <button
                   type="button"
                   onClick={() => setMobilePreviewOpen(false)}
-                  className="inline rounded-full border p-1 px-3 text-2xl font-normal duration-100 hover:bg-gray-200 active:bg-gray-300 md:hidden"
+                  className="inline p-1 px-3 text-2xl font-normal duration-100 border rounded-full hover:bg-gray-200 active:bg-gray-300 md:hidden"
                 >
                   &#x2715;
                 </button>
               )}
             </div>
-            <div className="tiny-scroll flex-grow overflow-y-auto">
+            <div className="flex-grow overflow-y-auto tiny-scroll">
               <div className="min-h-[500px] px-[20px] py-4">
                 {activeRoom.id && !activeRoom?.booking?.id ? (
                   <div className="">
@@ -878,11 +940,11 @@ const MessagesPage = () => {
                         user_property_spaces_id={favoriteId || activeProperty?.favourite}
                         withLoader={true}
                         reRender={forceRender}
-                        className="flex flex-grow justify-end w-fit float-right pt-2"
+                        className="flex justify-end flex-grow float-right pt-2 w-fit"
                       />
-                      <span className="absolute mt-3 px-2 py-1 text-white bg-black font-bold rounded-lg text-xs self-start">{activeProperty?.category || "N/A"}</span>
+                      <span className="absolute self-start px-2 py-1 mt-3 text-xs font-bold text-white bg-black rounded-lg">{activeProperty?.category || "N/A"}</span>
                     </div>
-                    <div className="py-6 block justify-between lg:items-start items-end lg:pl-0 w-full">
+                    <div className="items-end justify-between block w-full py-6 lg:items-start lg:pl-0">
                       <div className="">
                         <h2 className="text-[18px] font-semibold mb-[6px] whitespace-normal md:whitespace-nowrap">{activeProperty?.name}</h2>
                         <p className="text-[#475467] tracking-wider md:truncate mb-1">{activeProperty?.city}</p>
@@ -899,7 +961,7 @@ const MessagesPage = () => {
                       </div>
                       <div className="grid items-start">
                         <div className="flex items-center justify-between lg:mb-[9px] mt-3">
-                          <p className="flex gap-2 items-center ">
+                          <p className="flex items-center gap-2 ">
                             <StarIcon />
                             <strong className="font-semibold">
                               {(Number(activeProperty?.average_space_rating) || 0).toFixed(1)}
@@ -941,10 +1003,10 @@ const MessagesPage = () => {
                       className="mb-[8px] rounded-lg bg-cover bg-center bg-no-repeat px-[8px] pb-[13px]"
                       style={{ backgroundImage: `url(${(activeRoom.booking?.image_url) ?? "/default-property.jpg"})`, height: 150 }}
                     >
-                      <span className="px-2 py-1 mt-3 inline-flex text-white bg-black font-bold rounded-lg text-xs self-start">{activeRoom?.booking?.space_category ? activeRoom?.booking?.space_category : "N/A"}</span>
+                      <span className="inline-flex self-start px-2 py-1 mt-3 text-xs font-bold text-white bg-black rounded-lg">{activeRoom?.booking?.space_category ? activeRoom?.booking?.space_category : "N/A"}</span>
                     </div>
                     <div className="">
-                      <div className="mb-6 flex justify-between">
+                      <div className="flex justify-between mb-6">
                         <p>Date</p>
                         <p className="font-semibold">
                           {" "}
@@ -955,7 +1017,7 @@ const MessagesPage = () => {
                             new Date(activeRoom?.booking?.booking_start_time).getFullYear()}
                         </p>
                       </div>
-                      <div className="mb-6 flex justify-between">
+                      <div className="flex justify-between mb-6">
                         <p>Time</p>
                         <p className="font-semibold">
                           {formatAMPM(activeRoom.booking?.booking_start_time)} - {formatAMPM(activeRoom?.booking?.booking_end_time)}
@@ -986,7 +1048,7 @@ const MessagesPage = () => {
                   {(activeRoom?.booking_id && activeRoom?.booking?.id) &&
                     <Link
                       to={"/account/my-bookings/" + activeRoom.booking?.id}
-                      className="my-text-gradient text-xs font-semibold uppercase tracking-wider"
+                      className="text-xs font-semibold tracking-wider uppercase my-text-gradient"
                     >
                       View booking
                     </Link>}
@@ -994,7 +1056,7 @@ const MessagesPage = () => {
                   {activeRoom.id && !activeRoom?.booking?.id &&
                     <Link
                       to={"/property/" + activeProperty?.id}
-                      className="my-text-gradient text-xs font-semibold uppercase tracking-wider"
+                      className="text-xs font-semibold tracking-wider uppercase my-text-gradient"
                     >
                       View property
                     </Link>
@@ -1006,8 +1068,8 @@ const MessagesPage = () => {
         </div>
 
         {showEmoji && (
-                          <div className="absolute w-full h-full left-0 right-0">
-                          <div style={{"left":"50px !important"}} className="emoji-picker flex w-full h-full items-center justify-center">
+                          <div className="absolute left-0 right-0 w-full h-full">
+                          <div style={{"left":"50px !important"}} className="flex items-center justify-center w-full h-full emoji-picker">
                             <EmojiPicker
                             className="absolute -top-10 md:top-10 z-[1000] bottom-0 left-0 right-0"
                               onEmojiClick={(em) => {
