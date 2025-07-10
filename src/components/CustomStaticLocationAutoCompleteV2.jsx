@@ -7,14 +7,14 @@ import { GlobalContext } from "@/globalContext";
 
 export default function CustomStaticLocationAutoCompleteV2({ type, control, name, setValue, onClear, className, containerClassName, hideIcons, suggestionType, ...restProps }) {
   const { dispatch: globalDispatch, state: globalState } = useContext(GlobalContext);
-  const [location, setLocation] = useState(globalState.location);
-
+  const [location, setLocation] = useState(globalState.location || "");
 
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } = usePlacesService({
     apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
     options: { types: suggestionType ?? ["(region)"] },
     debounce: 200,
   });
+
   return (
     <Combobox
       as={"div"}
@@ -27,13 +27,13 @@ export default function CustomStaticLocationAutoCompleteV2({ type, control, name
         {...restProps}
         autoComplete="off"
         className={`w-full truncate text-black ${className ?? ""}`}
-        value={globalState.location}
+        value={location}
         onChange={(evt) => {
-          setLocation(evt.target.value)
+          setLocation(evt.target.value);
           getPlacePredictions({ input: evt.target.value });
         }}
       />
-      {!hideIcons && globalState.location && (
+      {!hideIcons && location && (
         <button
           type="button"
           onClick={() => {
@@ -94,9 +94,11 @@ export default function CustomStaticLocationAutoCompleteV2({ type, control, name
                 className="flex items-center w-full px-3 py-3 pr-5 text-sm truncate rounded-pill ui-active:bg-gray-100 ui-active:text-black ui-not-active:text-gray-800"
                 key={idx}
                 value={place.structured_formatting.main_text}
-                onClick={() => 
-                  setValue(place?.structured_formatting.main_text + ', ' + place.structured_formatting?.secondary_text)
-                }
+                onClick={() => {
+                  const selectedValue = place?.structured_formatting.main_text + ', ' + place.structured_formatting?.secondary_text;
+                  setValue(selectedValue);
+                  setLocation(selectedValue);
+                }}
               >
                 <span>{`${place.structured_formatting.main_text} ${place.structured_formatting?.secondary_text ? "," : ""} ${place.structured_formatting?.secondary_text ? place.structured_formatting?.secondary_text : ""}`}</span>
               </Combobox.Option>
