@@ -17,6 +17,7 @@ import TermsAndConditionsModal from "./TermsAndConditionsModal";
 import DatePickerV2 from "@/components/frontend/DatePickerV2";
 import { LoadingButton } from "@/components/frontend";
 import PrivacyAndPolicyModal from "./PrivacyAndPolicyModal";
+import commonPasswords from "@/assets/json/common-passwords.json";
 
 export default function SignUpDetailsForm() {
   const navigate = useNavigate();
@@ -30,6 +31,8 @@ export default function SignUpDetailsForm() {
   const sdk = new MkdSDK();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [privacyOpen, setPrivacyModalOpen] = React.useState(false);
+  const [termsAgreed, setTermsAgreed] = React.useState(false);
+  const [privacyRead, setPrivacyRead] = React.useState(false);
   const initialDate = useRef(new Date());
 
   function closeModal() {
@@ -47,11 +50,37 @@ export default function SignUpDetailsForm() {
   const schema = yup.object({
     firstName: yup.string().required("First name is required"),
     lastName: yup.string().required("Last name is required"),
-    dob: yup.date().required("Date of birth is required"),
-    password: yup.string()
+    dob: yup
+      .date()
+      .required("Date of birth is required")
+      .test("must-be-at-least-18yo", "Must be at least 18 years of age", (val) => {
+        if (!val) return false;
+        return moment().diff(moment(val), "years") >= 18;
+      }),
+    password: yup
+      .string()
       .required("Password is required")
-      .min(8, "Password must be at least 8 characters")
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain at least one uppercase letter, one lowercase letter, and one number")
+      .min(10, "Password must be at least 10 characters long")
+      .matches(/^(?=.*[0-9])/, "Password must contain at least one digit(0-9)")
+      .matches(/^(?=.*[a-z])/, "Password must contain at least one lowercase letter")
+      .matches(/^(?=.*[A-Z])/, "Password must contain at least one uppercase letter")
+      .matches(/^(?=.*[!@#\$%\^&\*])/, "Password must contain at least one symbol")
+      .test("is-not-dictionary", "Password must not contain a common word", (val) => {
+        return commonPasswords.every((pass) => !val.toLowerCase().includes(pass.toLowerCase()));
+      })
+      .test("does-not-contain-user-info", "Password must not contain your name or date of birth", (val, ctx) => {
+        const d = moment(ctx.parent.dob);
+        return [
+          ctx.parent.firstName,
+          ctx.parent.lastName,
+          d.format("yyyyMMDD"),
+          d.format("DDMMyyyy"),
+          d.format("MMDDyyyy"),
+          d.format("YYMMDD"),
+          d.format("MMDDYY"),
+          d.format("DDMMYY"),
+        ].every((field) => !field || field.trim() === "" || !val.toLowerCase().includes(field.toLowerCase()));
+      }),
   });
 
   const {
@@ -76,10 +105,65 @@ export default function SignUpDetailsForm() {
 
   const data = watch();
 
+  function getPasswordErrors() {
+    var arr = [];
+    if (Array.isArray(errors.password?.types?.matches)) {
+      arr = [...errors.password.types.matches];
+    }
+    if (typeof errors.password?.types?.matches === "string") {
+      arr.push(errors.password.types.matches);
+    }
+    if (errors.password?.types?.min) {
+      arr.push(errors.password.types.min);
+    }
+    if (errors.password?.types?.["does-not-contain-user-info"]) {
+      arr.push(errors.password.types["does-not-contain-user-info"]);
+    }
+    if (errors.password?.types?.["is-not-dictionary"]) {
+      arr.push(errors.password.types["is-not-dictionary"]);
+    }
+    return arr;
+  }
+  const passwordErrors = getPasswordErrors();
+
+  // Check if all validations pass
+  const isFormValid = () => {
+    return (
+      recaptchaValue &&
+      termsAgreed &&
+      privacyRead &&
+      !errors.firstName &&
+      !errors.lastName &&
+      !errors.dob &&
+      !errors.password &&
+      data.firstName &&
+      data.lastName &&
+      data.dob &&
+      data.password
+    );
+  };
+
   async function onSubmit() {
     // Check if reCAPTCHA is completed
     if (!recaptchaValue) {
       setRecaptchaError("Please complete the reCAPTCHA verification");
+      return;
+    }
+
+    // Check agreements
+    if (!termsAgreed) {
+      setError("firstName", {
+        type: "manual",
+        message: "Please agree to Terms and Conditions",
+      });
+      return;
+    }
+
+    if (!privacyRead) {
+      setError("firstName", {
+        type: "manual",
+        message: "Please read and agree to Privacy Policy",
+      });
       return;
     }
 
@@ -179,7 +263,11 @@ export default function SignUpDetailsForm() {
             max={initialDate.current}
             setValue={(v) => setValue("dob", v)}
           />
-          <div className={`${errors.password?.message && dirtyFields.password ? "border rounded-md border-[#C42945]" : "borde"} relative mb-4 flex justify-between rounded-md bg-transparent`}>
+          {errors.dob && (
+            <p className="text-red-500 text-xs italic mt-2 block">{errors.dob.message}</p>
+          )}
+          
+          <div className={`${errors.password?.message && dirtyFields.password ? "border rounded-md border-[#C42945]" : "border"} relative mb-4 flex justify-between rounded-md bg-transparent`}>
             <input
               autoComplete={showPassword ? "off" : "new-password"}
               type={showPassword ? "text" : "password"}
@@ -212,8 +300,12 @@ export default function SignUpDetailsForm() {
               )}
             </button>
           </div>
-          {errors.password && (
-            <p className="text-red-500 text-xs italic mt-2 block">{errors.password.message}</p>
+          {dirtyFields.password && (
+            <div className="fade-in mb-4 space-y-2 rounded-sm border border-[#C42945] p-3 text-sm normal-case text-[#C42945] empty:hidden">
+              {passwordErrors.map((msg, idx) => (
+                <p key={idx}>{msg}</p>
+              ))}
+            </div>
           )}
 
           {/* reCAPTCHA */}
@@ -229,33 +321,53 @@ export default function SignUpDetailsForm() {
             <p className="error-vibrate my-3 rounded-md border border-[#C42945] bg-white py-2 px-3 text-center text-sm normal-case text-[#C42945]">{recaptchaError}</p>
           )}
         
-          <p className="mb-4 text-sm normal-case text-gray-500">
-            Select and agree to {" "}
-            <button
-              type="button"
-              onClick={() =>setModalOpen(true)}
-              className="underline"
-            // target={"_blank"}
-            >
-            {" "} Terms and Conditions
-            </button>
-            {" "}
-            to continue.
-            {" "}
-            {" "}
-            <button
-              type="button"
-              onClick={() =>setPrivacyModalOpen(true)}
-              className="underline"
-            >
-             Privacy Policy
-            </button>
-          </p>
+          <div className="mb-4 space-y-3">
+            <div className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                id="terms-agreement"
+                checked={termsAgreed}
+                onChange={(e) => setTermsAgreed(e.target.checked)}
+                className="mt-1"
+              />
+              <label htmlFor="terms-agreement" className="text-sm normal-case text-gray-500">
+                I agree to the{" "}
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(true)}
+                  className="underline"
+                >
+                  Terms and Conditions
+                </button>
+              </label>
+            </div>
+            
+            <div className="flex items-start space-x-2">
+              <input
+                type="checkbox"
+                id="privacy-agreement"
+                checked={privacyRead}
+                onChange={(e) => setPrivacyRead(e.target.checked)}
+                className="mt-1"
+              />
+              <label htmlFor="privacy-agreement" className="text-sm normal-case text-gray-500">
+                I have read and agree to the{" "}
+                <button
+                  type="button"
+                  onClick={() => setPrivacyModalOpen(true)}
+                  className="underline"
+                >
+                  Privacy Policy
+                </button>
+              </label>
+            </div>
+          </div>
+          
           <LoadingButton
             loading={loading}
             type="submit"
-            disabled={!recaptchaValue}
-            className={`disabled:cursor-not-allowed login-btn-gradient rounded tracking-wide text-white outline-none focus:outline-none ${loading ? "py-1" : "py-2"} ${!recaptchaValue ? "opacity-50 cursor-not-allowed" : ""}`}
+            disabled={!isFormValid()}
+            className={`disabled:cursor-not-allowed login-btn-gradient rounded tracking-wide text-white outline-none focus:outline-none ${loading ? "py-1" : "py-2"} ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             Continue
           </LoadingButton>
@@ -269,10 +381,12 @@ export default function SignUpDetailsForm() {
           <TermsAndConditionsModal
           isOpen={modalOpen}
           closeModal={closeModal}
+          setIsAgreed={setTermsAgreed}
           />
           <PrivacyAndPolicyModal
           isOpen={privacyOpen}
           closeModal={closePrivacyModal}
+          setIsRead={setPrivacyRead}
           />
     </>
   );

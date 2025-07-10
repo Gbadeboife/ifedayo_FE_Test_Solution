@@ -8,8 +8,9 @@ import { useState } from "react";
 import { Fragment } from "react";
 import MkdSDK from "@/utils/MkdSDK";
 
-const PrivacyAndPolicyModal = ({ isOpen, closeModal }) => {
+const PrivacyAndPolicyModal = ({ isOpen, closeModal, setIsRead }) => {
   const [privacy, setPrivacy] = useState("");
+  const [hasRead, setHasRead] = useState(false);
   const { dispatch: globalDispatch } = useContext(GlobalContext);
 
   async function fetchPrivacyPolicy() {
@@ -37,6 +38,15 @@ const PrivacyAndPolicyModal = ({ isOpen, closeModal }) => {
   useEffect(() => {
     fetchPrivacyPolicy();
   }, []);
+
+  const handleScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+    const scrolledToBottom = scrollTop + clientHeight >= scrollHeight - 10; // 10px threshold
+    if (scrolledToBottom && !hasRead) {
+      setHasRead(true);
+      if (setIsRead) setIsRead(true);
+    }
+  };
 
   return (
     <>
@@ -94,7 +104,27 @@ const PrivacyAndPolicyModal = ({ isOpen, closeModal }) => {
                   <article
                     className="sun-editor-editable text-sm max-h-[600px] overflow-y-auto my-8"
                     dangerouslySetInnerHTML={{ __html: privacy }}
+                    onScroll={handleScroll}
                   ></article>
+                </div>
+                <div className="checkbox-container">
+                  <input
+                    type={"checkbox"}
+                    name="i-have-read-privacy"
+                    id="i-have-read-privacy"
+                    checked={hasRead}
+                    onChange={() => {
+                      setHasRead((prev) => !prev);
+                      if (setIsRead) setIsRead((prev) => !prev);
+                      closeModal();
+                    }}
+                  />
+                  <label
+                    htmlFor="i-have-read-privacy"
+                    className="items-center cursor-pointer remove-select"
+                  >
+                    I have read and agree to the Privacy Policy
+                  </label>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
