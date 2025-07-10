@@ -16,6 +16,7 @@ import countries from "@/utils/countries.json";
 import * as yup from "yup";
 import CustomLocationAutoCompleteV2 from "@/components/CustomLocationAutoCompleteV2";
 import CustomComboBox from "@/components/CustomComboBox";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const readImage = (file, previewEl) => {
   const reader = new FileReader();
@@ -49,8 +50,15 @@ export default function BecomeAHostPage() {
   const [passport, setPassport] = useState(null);
   const [loading, setLoading] = useState(false);
   const [imageErr, setImageErr] = useState("");
+  const [recaptchaValue, setRecaptchaValue] = useState(null);
+  const [recaptchaError, setRecaptchaError] = useState("");
 
   const navigate = useNavigate();
+
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaValue(value);
+    setRecaptchaError("");
+  };
 
   const schema = yup.object({
     // dob: yup
@@ -109,6 +117,12 @@ export default function BecomeAHostPage() {
   };
 
   async function onSubmit(data) {
+    // Check if reCAPTCHA is completed
+    if (!recaptchaValue) {
+      setRecaptchaError("Please complete the reCAPTCHA verification");
+      return;
+    }
+
     // check if images are uploaded
     if (selectedType == "Driver's License" && (!frontImage || !backImage)) {
       setImageErr("Please upload required documents");
@@ -443,6 +457,20 @@ export default function BecomeAHostPage() {
             setValue={(v) => setValue("expiry_date", v)}
           />
         </div>
+
+        {/* reCAPTCHA */}
+        <div className="mb-6 flex justify-center">
+          <ReCAPTCHA
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+            onChange={handleRecaptchaChange}
+            onExpired={() => setRecaptchaValue(null)}
+          />
+        </div>
+        
+        {recaptchaError && (
+          <p className="error-vibrate my-3 rounded-md border border-[#C42945] bg-white py-2 px-3 text-center text-sm normal-case text-[#C42945]">{recaptchaError}</p>
+        )}
+
         <div className="mb-16 flex gap-4">
           <Link
             to={-1}
@@ -453,7 +481,8 @@ export default function BecomeAHostPage() {
           <LoadingButton
             loading={loading}
             type="submit"
-            className={`login-btn-gradient rounded tracking-wide text-white outline-none focus:outline-none ${loading ? "bg-opacity-50 py-1 px-8" : "py-2"} px-4`}
+            disabled={!recaptchaValue}
+            className={`login-btn-gradient rounded tracking-wide text-white outline-none focus:outline-none ${loading ? "bg-opacity-50 py-1 px-8" : "py-2"} px-4 ${!recaptchaValue ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             Continue
           </LoadingButton>

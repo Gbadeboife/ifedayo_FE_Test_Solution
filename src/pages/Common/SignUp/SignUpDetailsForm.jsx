@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, useNavigate } from "react-router";
 import { useSignUpContext } from "./signUpContext";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -24,6 +25,8 @@ export default function SignUpDetailsForm() {
   const { dispatch: authDispatch } = React.useContext(AuthContext);
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [recaptchaValue, setRecaptchaValue] = React.useState(null);
+  const [recaptchaError, setRecaptchaError] = React.useState("");
   const sdk = new MkdSDK();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [privacyOpen, setPrivacyModalOpen] = React.useState(false);
@@ -36,11 +39,19 @@ export default function SignUpDetailsForm() {
     setPrivacyModalOpen(false);
   }
 
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaValue(value);
+    setRecaptchaError("");
+  };
+
   const schema = yup.object({
-    firstName: yup.string(),
-    lastName: yup.string(),
-    dob: yup.date(),
+    firstName: yup.string().required("First name is required"),
+    lastName: yup.string().required("Last name is required"),
+    dob: yup.date().required("Date of birth is required"),
     password: yup.string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters")
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain at least one uppercase letter, one lowercase letter, and one number")
   });
 
   const {
@@ -66,6 +77,12 @@ export default function SignUpDetailsForm() {
   const data = watch();
 
   async function onSubmit() {
+    // Check if reCAPTCHA is completed
+    if (!recaptchaValue) {
+      setRecaptchaError("Please complete the reCAPTCHA verification");
+      return;
+    }
+
     setLoading(true);
     try {
       const result = await sdk.register(signUpData.email, data.password, role);
@@ -195,7 +212,22 @@ export default function SignUpDetailsForm() {
               )}
             </button>
           </div>
+          {errors.password && (
+            <p className="text-red-500 text-xs italic mt-2 block">{errors.password.message}</p>
+          )}
 
+          {/* reCAPTCHA */}
+          <div className="mb-6 flex justify-center">
+            <ReCAPTCHA
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              onChange={handleRecaptchaChange}
+              onExpired={() => setRecaptchaValue(null)}
+            />
+          </div>
+          
+          {recaptchaError && (
+            <p className="error-vibrate my-3 rounded-md border border-[#C42945] bg-white py-2 px-3 text-center text-sm normal-case text-[#C42945]">{recaptchaError}</p>
+          )}
         
           <p className="mb-4 text-sm normal-case text-gray-500">
             Select and agree to {" "}
@@ -222,8 +254,8 @@ export default function SignUpDetailsForm() {
           <LoadingButton
             loading={loading}
             type="submit"
-            className={`disabled:cursor-not-allowed login-btn-gradient rounded tracking-wide text-white outline-none focus:outline-none ${loading ? "py-1" : "py-2"}`}
-            // disabled={!recaptchaValidated}
+            disabled={!recaptchaValue}
+            className={`disabled:cursor-not-allowed login-btn-gradient rounded tracking-wide text-white outline-none focus:outline-none ${loading ? "py-1" : "py-2"} ${!recaptchaValue ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             Continue
           </LoadingButton>
