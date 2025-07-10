@@ -68,6 +68,50 @@ const MessagesPage = () => {
 
   const bookingExpired = activeBooking.booking_start_time && activeBooking.status < BOOKING_STATUS.ONGOING ? new Date(activeBooking.booking_end_time) < Date.now() : false;
 
+  // Message validation functions
+  const validateMessage = (messageText) => {
+    // a. Check for links/URLs and profane language
+    const links = linkify.find(messageText);
+    if (links.length > 0) {
+      showToast(globalDispatch, "Sharing links or URLs is not allowed.", 4000, "ERROR");
+      return false;
+    }
+
+    // d. Check for bad words from badWords.json
+    const messageLower = messageText.toLowerCase();
+    const containsBadWord = badWords.some(badWord => 
+      messageLower.includes(badWord.toLowerCase())
+    );
+    if (containsBadWord) {
+      showToast(globalDispatch, "Message contains inappropriate language.", 4000, "ERROR");
+      return false;
+    }
+
+    // b. Check for phone numbers and emails if booking is not ongoing
+    if (activeBooking.status !== BOOKING_STATUS.ONGOING) {
+      const phoneRegex = /(\+?[\d\s\-\(\)]{7,})/g;
+      const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+      
+      if (phoneRegex.test(messageText) || emailRegex.test(messageText)) {
+        showToast(globalDispatch, "Sharing phone numbers or emails is not allowed for non-ongoing bookings.", 4000, "ERROR");
+        return false;
+      }
+    }
+
+    // c. Check message count for non-ongoing bookings
+    if (activeBooking.status !== BOOKING_STATUS.ONGOING) {
+      const currentRoomMessages = messages[activeRoom.id] || [];
+      const messageCount = currentRoomMessages.length;
+      
+      if (messageCount >= 3) {
+        showToast(globalDispatch, "Maximum 3 messages allowed for non-ongoing bookings.", 4000, "ERROR");
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   async function getRooms() {
     try {
       // const result2 = await treeSdk.getList("room", { join: ["user|other_user_id", "booking"], filter: [`user_id,eq,${state.user}`] });
@@ -155,7 +199,10 @@ const MessagesPage = () => {
 
     setShowEmoji(false);
     
-    //Add checks to validate message based on active booking
+    // Validate message before sending
+    if (!validateMessage(message)) {
+      return;
+    }
     
     setSending(true);
 
