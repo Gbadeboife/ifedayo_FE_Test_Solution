@@ -102,6 +102,24 @@ const EditPropertySpacePage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (currSpace && Object.keys(currSpace).length > 0) {
+      setValue("name", currSpace.name || "");
+      setValue("address_line_1", currSpace.address_line_1 || "");
+      setValue("address_line_2", currSpace.address_line_2 || "");
+      setValue("city", currSpace.city || "");
+      setValue("zip", currSpace.zip || "");
+      setValue("category", currSpace.space_id?.toString() || "");
+      setValue("rate", currSpace.rate || "");
+      setValue("description", currSpace.description || "");
+      setValue("rule", currSpace.rule || "");
+      setValue("max_capacity", currSpace.max_capacity || 0);
+      setValue("additional_guest_rate", currSpace.additional_guest_rate || "");
+      setValue("size", currSpace.size || 0);
+      setValue("id", currSpace.id || "");
+    }
+  }, [currSpace, setValue]);
+
   const onSubmit = async (data) => {
     const result = extractLocationInfo(data?.city)
     data.city = (result[0]);
