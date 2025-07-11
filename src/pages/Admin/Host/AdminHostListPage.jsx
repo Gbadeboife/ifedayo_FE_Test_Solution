@@ -12,7 +12,8 @@ import Button from "@/components/Button";
 import AddButton from "@/components/AddButton";
 import Table from "@/components/Table";
 import PaginationHeader from "@/components/PaginationHeader";
-import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { useRef } from 'react';
 import { ID_PREFIX, IMAGE_STATUS } from "@/utils/constants";
 import { adminColumns, applySetting } from "@/utils/adminPortalColumns";
 import ProfileImagePreviewModal from "../User/ProfileImagePreviewModal";
@@ -195,6 +196,8 @@ const AdminHostListPage = () => {
     }
   }
 
+  const tableRef = useRef(null);
+
   return (
     <>
       <form
@@ -257,19 +260,19 @@ const AdminHostListPage = () => {
         >
           Change Column Order
         </Link>
-        <ReactHtmlTableToExcel
-          id="test-table-xls-button"
-          className="ml-5 mb-1 mr-3 flex items-center  rounded !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none"
-          table="table-to-xls"
-          filename="hosts"
-          sheet="hosts"
-          buttonText="Export to xls"
-        />
+        <DownloadTableExcel
+          filename="host_list"
+          sheet="host_list"
+          currentTableRef={tableRef.current}
+        >
+          <button className="export-btn">Export to xls</button>
+        </DownloadTableExcel>
       </div>
 
       <div className="overflow-x-auto normal-case">
         <div className="overflow-x-auto border-b border-gray-200 shadow ">
-          <table
+          <Table
+            ref={tableRef}
             className="min-w-full divide-y divide-gray-200 border border-t-0 bg-white"
             id="table-to-xls"
           >
@@ -414,7 +417,7 @@ const AdminHostListPage = () => {
                 );
               })}
             </tbody>
-          </table>
+          </Table>
         </div>
       </div>
       <PaginationBar
