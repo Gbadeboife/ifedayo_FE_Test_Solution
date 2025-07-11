@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [react(), svgr()],
   build: {
     chunkSizeWarningLimit: 1600,
+    outDir: 'dist',
     commonjsOptions: {
       defaultIsModuleExports(id) {
         if (/react-google-autocomplete/.test(id)) return false;

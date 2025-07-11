@@ -12,7 +12,8 @@ import AddButton from "@/components/AddButton";
 import Button from "@/components/Button";
 import Table from "@/components/Table";
 import PaginationHeader from "@/components/PaginationHeader";
-import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { useRef } from 'react';
 import { ID_PREFIX } from "@/utils/constants";
 import { adminColumns, applySetting } from "@/utils/adminPortalColumns";
 import TreeSDK from "@/utils/TreeSDK";
@@ -208,6 +209,8 @@ const HostAmenitiesListPage = () => {
     }
   }
 
+  const tableRef = useRef(null);
+
   return (
     <div className="mt-10">
      <div className="flex justify-between mb-4">
@@ -232,7 +235,15 @@ const HostAmenitiesListPage = () => {
 
       <div className="overflow-x-auto rounded">
         <div className="overflow-x-auto border-b border-gray-200 shadow ">
+          <DownloadTableExcel
+            filename="amenities_list"
+            sheet="amenities_list"
+            currentTableRef={tableRef.current}
+          >
+            <button className="export-btn">Export to xls</button>
+          </DownloadTableExcel>
           <Table
+            ref={tableRef}
             columns={tableColumns}
             rows={data}
             tableType={"Amenity"}
