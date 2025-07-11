@@ -8,7 +8,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import MkdSDK from "@/utils/MkdSDK";
 import { callCustomAPI } from "@/utils/callCustomAPI";
 import countries from "@/utils/countries.json";
-import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { useRef } from 'react';
 import { adminColumns, applySetting } from "@/utils/adminPortalColumns";
 
 const monthMapping = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -23,6 +24,7 @@ const AdminReportsPage = () => {
   const [bookingColumns, setBookingColumns] = React.useState([]);
   const [analyticColumns, setAnalyticColumns] = React.useState([]);
   const [heading, setHeading] = React.useState([]);
+  const tableRef = useRef(null);
 
   const schema = yup.object({
     start_date: yup.string(),
@@ -213,14 +215,13 @@ const AdminReportsPage = () => {
           >
             Change Column Order
           </Link>
-          <ReactHtmlTableToExcel
-            id="test-table-xls-button"
-            className="ml-5 mb-1 mr-3 flex items-center  rounded !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none"
-            table="table-to-xls"
-            filename={heading}
-            sheet={heading}
-            buttonText="Export to xls"
-          />
+          <DownloadTableExcel
+            filename="admin_reports"
+            sheet="admin_reports"
+            currentTableRef={tableRef.current}
+          >
+            <button className="export-btn">Export to xls</button>
+          </DownloadTableExcel>
         </div>
       </div>
       <div className="overflow-x-auto rounded bg-white shadow">
@@ -228,6 +229,7 @@ const AdminReportsPage = () => {
           <table
             className="min-w-full divide-y divide-gray-200 border border-t-0 bg-white"
             id="table-to-xls"
+            ref={tableRef}
           >
             <thead className="cursor-pointer bg-gray-50">
               <tr className="cursor-pointer">

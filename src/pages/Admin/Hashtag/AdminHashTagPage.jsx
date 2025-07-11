@@ -12,7 +12,8 @@ import AddButton from "@/components/AddButton";
 import Button from "@/components/Button";
 import Table from "@/components/Table";
 import PaginationHeader from "@/components/PaginationHeader";
-import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { useRef } from 'react';
 import { ID_PREFIX } from "@/utils/constants";
 import { adminColumns, applySetting } from "@/utils/adminPortalColumns";
 import TreeSDK from "@/utils/TreeSDK";
@@ -33,6 +34,7 @@ const AdminHashTagPage = () => {
   const [canNextPage, setCanNextPage] = React.useState(false);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const tableRef = useRef(null);
 
   const schema = yup.object({
     id: yup.string(),
@@ -249,19 +251,19 @@ const AdminHashTagPage = () => {
         >
           Change Column Order
         </Link>{" "}
-        <ReactHtmlTableToExcel
-          id="test-table-xls-button"
-          className="ml-5 mb-1 mr-3 flex items-center  rounded !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none"
-          table="table-to-xls"
-          filename="hashtag"
-          sheet="hashtag"
-          buttonText="Export to xls"
-        />
+        <DownloadTableExcel
+          filename="hashtag_list"
+          sheet="hashtag_list"
+          currentTableRef={tableRef.current}
+        >
+          <button className="export-btn">Export to xls</button>
+        </DownloadTableExcel>
       </div>
 
       <div className="overflow-x-auto">
         <div className="overflow-x-auto border-b border-gray-200 shadow ">
           <Table
+            ref={tableRef}
             columns={tableColumns}
             rows={data}
             tableType={"Hashtag"}

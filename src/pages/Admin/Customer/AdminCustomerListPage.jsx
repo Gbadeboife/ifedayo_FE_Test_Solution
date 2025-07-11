@@ -11,7 +11,8 @@ import PaginationBar from "@/components/PaginationBar";
 import PaginationHeader from "@/components/PaginationHeader";
 import AddButton from "@/components/AddButton";
 import Button from "@/components/Button";
-import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import { DownloadTableExcel } from 'react-export-table-to-excel';
+import { useRef } from 'react';
 import { ID_PREFIX, IMAGE_STATUS } from "@/utils/constants";
 import { adminColumns, applySetting } from "@/utils/adminPortalColumns";
 import ProfileImagePreviewModal from "../User/ProfileImagePreviewModal";
@@ -38,6 +39,7 @@ const AdminCustomerListPage = () => {
   const [activePicture, setActivePicture] = React.useState("");
   const [pictureModal, setPictureModal] = React.useState(false);
   const [activeRow, setActiveRow] = React.useState({});
+  const tableRef = useRef(null);
 
   const schema = yup.object({
     id: yup.string(),
@@ -358,14 +360,15 @@ const AdminCustomerListPage = () => {
         >
           Change Column Order
         </Link>
-        <ReactHtmlTableToExcel
-          id="test-table-xls-button"
-          className="ml-5 mb-1 mr-3 flex items-center  rounded !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none"
-          table="table-to-xls"
-          filename="customers"
-          sheet="customers"
-          buttonText="Export to xls"
-        />
+        <DownloadTableExcel
+          filename="customer_list"
+          sheet="customer_list"
+          currentTableRef={tableRef.current}
+        >
+          <button className="ml-5 mb-1 mr-3 flex items-center  rounded !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none">
+            Export to xls
+          </button>
+        </DownloadTableExcel>
       </div>
 
       <div className="overflow-x-auto rounded normal-case">
@@ -373,6 +376,7 @@ const AdminCustomerListPage = () => {
           <table
             className="min-w-full divide-y divide-gray-200 border border-t-0 bg-white"
             id="table-to-xls"
+            ref={tableRef}
           >
             <thead className="cursor-pointer bg-gray-50">
               <tr className="cursor-pointer">
