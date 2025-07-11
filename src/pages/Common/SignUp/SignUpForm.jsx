@@ -26,7 +26,8 @@ const SignUpForm = () => {
         if (!value) return false;
         const emailParts = value.split("@");
         if (emailParts.length !== 2) return false;
-        const tld = emailParts[1].toLowerCase();
+        const domain = emailParts[1].toLowerCase();
+        const tld = domain.split('.').pop(); // Extract the TLD part (after the last dot)
         return TLDs.includes(tld);
       }),
   });
