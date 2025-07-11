@@ -290,7 +290,7 @@ const HomePage = () => {
         </nav>
         <h1 className="mb-[30px] px-4 text-center text-5xl font-bold text-white md:text-6xl lg:text-7xl">Spaces tailored to your needs</h1>
         <form
-          className="fourteenth-step flex flex-wrap justify-center px-6 text-sm md:px-24 md:text-base lg:flex-nowrap"
+          className="flex flex-wrap justify-center px-6 text-sm fourteenth-step md:px-24 md:text-base lg:flex-nowrap"
           id="search-bar"
           onSubmit={handleSubmit(onSubmit)}
           autoComplete="off"
@@ -325,7 +325,7 @@ const HomePage = () => {
             <input
               type="number"
               placeholder={activeTab == "Parking" ? "Number of spaces" : "2 People"}
-              className="remove-arrow w-full focus:outline-none"
+              className="w-full remove-arrow focus:outline-none"
               {...register("max_capacity")}
             />
           </div>
@@ -364,12 +364,12 @@ const HomePage = () => {
       <div className="mb-[48px] w-full">
       <h2 className="mb-[5px] px-4 text-center text-3xl font-bold normal-case md:text-4xl">Top-quality spaces and customer service</h2>
       <h5 className="mb-[8px] px-4 text-center text-md font-normal normal-case md:text-2xl">Your number one stop for renting and offering space(s) for work and leisure</h5>
-      <div className="mt-10 flex justify-center mx-auto max-w-max">
+      <div className="flex justify-center mx-auto mt-10 max-w-max">
       <div className="grid grid-cols-2 md:grid-cols-4 w-full items-center justify-even gap-[15px] text-xl text-gray-300 w-full">
       {spaceCategories.map((cat, idx) => (
-        <div key={cat.id} className="w-full block">
-             <span className="flex items-center gap-2 rounded-full py-1 text-black">
-             <img src= {cat.icon} className="w-5 h-5 object-cover"/>
+        <div key={cat.id} className="block w-full">
+             <span className="flex items-center gap-2 py-1 text-black rounded-full">
+             <img src= {cat.icon} className="object-cover w-5 h-5"/>
              {cat.category}
            </span>
           </div>
@@ -383,7 +383,7 @@ const HomePage = () => {
           <h3 className="text-3xl font-bold">Popular</h3>
           <Link
             to={`/explore?section=popular`}
-            className="my-text-gradient text-sm font-semibold tracking-wider"
+            className="text-sm font-semibold tracking-wider my-text-gradient"
             id="view-all-popular"
           >
             VIEW ALL POPULAR
@@ -430,14 +430,14 @@ const HomePage = () => {
           <h3 className="text-3xl font-bold">Browse By Category</h3>
           <Link
             to={`/explore?category=&section=popular&price_range=&space_name=&location=&from=&to=`}
-            className="my-text-gradient text-sm font-semibold tracking-wider"
+            className="text-sm font-semibold tracking-wider my-text-gradient"
             id="view-all-popular"
           >
             VIEW ALL CATEGORIES
           </Link>
         </div>
 
-        <div className="md:browse-grid flex flex-wrap justify-between w-full gap-4">
+        <div className="flex flex-wrap justify-between w-full gap-4 md:browse-grid">
           {spaceCategories.slice(0,spaceCategories.length-4).map((tab, idx) => (
             <Link
               key={tab.id}
@@ -447,9 +447,9 @@ const HomePage = () => {
               <img
                 src={tab.image}
                 alt={tab.category}
-                className="h-24 w-full rounded-lg object-cover md:h-40"
+                className="object-cover w-full h-24 rounded-lg md:h-40"
               />
-              <p className="text-lg w-full py-3 px-5 text-right font-semibold">{tab.category}</p>
+              <p className="w-full px-5 py-3 text-lg font-semibold text-right">{tab.category}</p>
             </Link>
           ))}
         </div>
@@ -459,7 +459,7 @@ const HomePage = () => {
           <h3 className="text-2xl font-bold md:text-3xl">Top rated hosts</h3>
           <Link
             to={`/explore?section=hosts`}
-            className="my-text-gradient text-sm font-semibold tracking-wider md:text-base"
+            className="text-sm font-semibold tracking-wider my-text-gradient md:text-base"
             id="view-all-hosts"
           >
             VIEW ALL HOSTS
@@ -473,7 +473,7 @@ const HomePage = () => {
           <h3 className="text-2xl font-bold md:text-3xl">New Spaces</h3>
           <Link
             to={`/explore?section=new-spaces`}
-            className="my-text-gradient text-sm font-semibold tracking-wider md:text-base"
+            className="text-sm font-semibold tracking-wider my-text-gradient md:text-base"
             id="view-all-new-spaces"
           >
             VIEW ALL NEW SPACES
@@ -521,19 +521,19 @@ const HomePage = () => {
       </section>
 
       {(!isLoggedIn || userRole === "customer") && (
-        <section className="container bg-gray-100 mx-auto py-20 rounded-xl mb-12 2xl:px-16 px-6 md:flex justify-between md:flex-nowrap items-center">
+        <section className="container items-center justify-between px-6 py-20 mx-auto mb-12 bg-gray-100 rounded-xl 2xl:px-16 md:flex md:flex-nowrap">
           <div className="w-full md:w-[25%] mt-8 md:mt-0">
-            <h3 className="text-xl pb-3 leading-10 font-bold md:text-4xl">Host Your Space Today!</h3>
-            <p className="text-base text-left my-4">
+            <h3 className="pb-3 text-xl font-bold leading-10 md:text-4xl">Host Your Space Today!</h3>
+            <p className="my-4 text-base text-left">
               Unlock new income opportunities by listing your space on our platform. Join a community of successful hosts, reach thousands of potential guests, and maximize your property's potential.
             </p>
               <button
               onClick={() => authState.originalRole === "customer" ? navigate("/become-a-host") : navigate("/signup")}
-              className="login-btn-gradient mb-4 py-3 px-4 rounded-3xl text-sm text-white">
+              className="px-4 py-3 mb-4 text-sm text-white login-btn-gradient rounded-3xl">
                 Start Hosting Now
               </button>
           </div>
-          <div className="hidden md:flex justify-between w-full md:w-1/2">
+          <div className="justify-between hidden w-full md:flex md:w-1/2">
             <img
               src="https://freepngimg.com/thumb/building/154733-building-hotel-download-hq.png"
               alt="Descriptive Alt Text"
