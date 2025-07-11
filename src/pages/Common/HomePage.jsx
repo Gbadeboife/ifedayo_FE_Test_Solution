@@ -20,7 +20,7 @@ import CustomLocationAutoCompleteV2 from "@/components/CustomLocationAutoComplet
 import DatePickerV3 from "@/components/DatePickerV3";
 import CustomSelectV2 from "@/components/CustomSelectV2";
 import MkdSDK from "@/utils/MkdSDK";
-import CustomStaticLocationAutoCompleteV2 from "@/components/CustomStaticLocationAutoCompleteV2 ";
+import CustomStaticLocationAutoCompleteV2 from "@/components/CustomStaticLocationAutoCompleteV2";
 
 const sdk = new MkdSDK();
 const ctrl = new AbortController();
