@@ -21,7 +21,7 @@ import { isValidDate, parseSearchParams } from "@/utils/utils";
 import FilterCheckBoxesV2 from "@/components/FilterCheckBoxesV2";
 import MkdSDK from "@/utils/MkdSDK";
 import useAmenityCategories from "@/hooks/api/useAmenityCategories";
-import CustomStaticLocationAutoCompleteV2 from "@/components/CustomStaticLocationAutoCompleteV2 ";
+import CustomStaticLocationAutoCompleteV2 from "@/components/CustomStaticLocationAutoCompleteV2";
 
 const prices = [
   { name: "$0 - $30", id: 0 },
