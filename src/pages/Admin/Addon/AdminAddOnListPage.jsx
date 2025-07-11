@@ -12,10 +12,12 @@ import AddButton from "@/components/AddButton";
 import Button from "@/components/Button";
 import Table from "@/components/Table";
 import PaginationHeader from "@/components/PaginationHeader";
-import ReactHtmlTableToExcel from "react-html-table-to-excel";
 import { ID_PREFIX } from "@/utils/constants";
 import { adminColumns, applySetting } from "@/utils/adminPortalColumns";
 import TreeSDK from "@/utils/TreeSDK";
+import { DownloadTableExcel } from 'react-export-table-to-excel'; // ✅ NEW
+import { useRef } from 'react';
+
 
 let sdk = new MkdSDK();
 let treeSdk = new TreeSDK();
@@ -33,6 +35,7 @@ const AdminAddOnListPage = () => {
   const [canNextPage, setCanNextPage] = React.useState(false);
   const [searchParams, setSearchParams] = useSearchParams(localStorage.getItem("admin_addon_filter") ?? "");
   const [spaceCategories, setSpaceCategories] = React.useState([]);
+  const tableRef = useRef(null); // Add this line to create a ref for the table
 
   const schema = yup.object({
     name: yup.string(),
@@ -210,7 +213,7 @@ const AdminAddOnListPage = () => {
   return (
     <>
       <form
-        className="rounded rounded-b-none border border-b-0 bg-white p-5"
+        className="p-5 bg-white border border-b-0 rounded rounded-b-none"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex justify-between">
@@ -221,10 +224,10 @@ const AdminAddOnListPage = () => {
           />
         </div>
 
-        <div className="filter-form-holder mt-10 flex max-w-2xl flex-wrap">
-          <div className="mb-4 w-full pr-2 pl-2 md:w-1/2">
+        <div className="flex flex-wrap max-w-2xl mt-10 filter-form-holder">
+          <div className="w-full pl-2 pr-2 mb-4 md:w-1/2">
             <label
-              className="mb-2 block text-sm font-bold text-gray-700"
+              className="block mb-2 text-sm font-bold text-gray-700"
               htmlFor="id"
             >
               ID
@@ -237,9 +240,9 @@ const AdminAddOnListPage = () => {
             <p className="text-xs italic text-red-500">{errors.id?.message}</p>
           </div>
 
-          <div className="mb-4 w-full pr-2 pl-2 md:w-1/2">
+          <div className="w-full pl-2 pr-2 mb-4 md:w-1/2">
             <label
-              className="mb-2 block text-sm font-bold text-gray-700"
+              className="block mb-2 text-sm font-bold text-gray-700"
               htmlFor="type"
             >
               Name
@@ -252,9 +255,9 @@ const AdminAddOnListPage = () => {
             <p className="text-xs italic text-red-500">{errors.name?.message}</p>
           </div>
 
-          <div className="mb-4 w-full pr-2 pl-2 md:w-1/2">
+          <div className="w-full pl-2 pr-2 mb-4 md:w-1/2">
             <label
-              className="mb-2 block text-sm font-bold text-gray-700"
+              className="block mb-2 text-sm font-bold text-gray-700"
               htmlFor="space_id"
             >
               Space Category
@@ -299,26 +302,30 @@ const AdminAddOnListPage = () => {
         updatePageSize={updatePageSize}
       />
 
-      <div className="flex justify-end bg-white py-3 pt-5">
+      <div className="flex justify-end py-3 pt-5 bg-white">
         <Link
           to="/admin/column_order/addon_categories"
           className="ml-5 mb-1 mr-3 flex items-center  rounded !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none"
         >
           Change Column Order
         </Link>{" "}
-        <ReactHtmlTableToExcel
-          id="test-table-xls-button"
-          className="ml-5 mb-1 mr-3 flex items-center  rounded !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none"
-          table="table-to-xls"
+        <DownloadTableExcel
           filename="addon_categories"
           sheet="addon_categories"
-          buttonText="Export to xls"
-        />
+          currentTableRef={tableRef.current}
+        >
+          <button
+            className="ml-5 mb-1 mr-3 flex items-center  rounded !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none"
+          >
+            Export to xls
+          </button>
+        </DownloadTableExcel>
       </div>
 
       <div className="overflow-x-auto rounded">
         <div className="overflow-x-auto border-b border-gray-200 shadow ">
           <Table
+            ref={tableRef} // Pass the ref to the Table component
             columns={tableColumns}
             rows={data}
             emailActions
