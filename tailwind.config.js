@@ -23,5 +23,5 @@ module.exports = {
       colors: { primary: "#33d4b7", "primary-dark": "#0D9895" },
     },
   },
-  plugins: [require("@headlessui/tailwindcss", '@tailwindcss/custom-forms')],
+  plugins: [require("@headlessui/tailwindcss", "@tailwindcss/forms")],
 };
