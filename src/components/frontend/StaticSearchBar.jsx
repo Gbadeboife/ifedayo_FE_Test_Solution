@@ -67,7 +67,7 @@ const StaticSearchBar = ({ className }) => {
   return (
     <div className={className}>
       <form
-        className="my-shadow2 flex w-full max-w-xl items-center rounded-lg rounded-r-pill border bg-white pl-1 md:rounded-r-lg md:pl-4 xl:ml-16 xl:max-w-3xl"
+        className="flex items-center w-full max-w-xl pl-1 bg-white border rounded-lg my-shadow2 rounded-r-pill md:rounded-r-lg md:pl-4 xl:ml-16 xl:max-w-3xl"
         onSubmit={handleSubmit(onSubmit)}
         autoComplete="off"
         id="top-header-search-bar"
@@ -80,7 +80,7 @@ const StaticSearchBar = ({ className }) => {
           setValue={(val) => setValue("category", val)}
           items={categories}
           containerClassName="relative hidden h-[40px] items-center md:flex md:w-[500px]"
-          className="w-full truncate border-0 text-black focus:outline-none"
+          className="w-full text-black truncate border-0 focus:outline-none"
           placeholder="Search by category"
         />
 
@@ -107,9 +107,9 @@ const StaticSearchBar = ({ className }) => {
           <SearchIcon className="md:w-[50px]" />
           <span className="hidden md:inline">Search</span>
         </button>
-        <button className="login-btn-gradient flex h-10 w-11 items-center justify-center rounded-circle md:hidden">
+        <button className="flex items-center justify-center h-10 login-btn-gradient w-11 rounded-circle md:hidden">
           {" "}
-          <MagnifyingGlassIcon className="h-5 w-5 font-semibold text-white" />
+          <MagnifyingGlassIcon className="w-5 h-5 font-semibold text-white" />
         </button>
       </form>
     </div>

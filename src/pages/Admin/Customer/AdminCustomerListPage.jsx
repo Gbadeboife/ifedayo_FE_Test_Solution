@@ -244,7 +244,7 @@ const AdminCustomerListPage = () => {
   return (
     <>
       <form
-        className="rounded rounded-b-none border border-b-0 bg-white p-5"
+        className="p-5 bg-white border border-b-0 rounded rounded-b-none"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex justify-between">
@@ -255,47 +255,47 @@ const AdminCustomerListPage = () => {
           />
         </div>
 
-        <div className="filter-form-holder mt-10 flex flex-wrap">
-          <div className="mb-4 w-full pr-2 pl-2 md:w-1/3">
-            <label className="mb-2 block text-sm font-bold text-gray-700">ID</label>
+        <div className="flex flex-wrap mt-10 filter-form-holder">
+          <div className="w-full pl-2 pr-2 mb-4 md:w-1/3">
+            <label className="block mb-2 text-sm font-bold text-gray-700">ID</label>
             <input
               type="text"
               {...register("id")}
-              className="   mb-3  w-full rounded border py-2 px-3 leading-tight text-gray-700 focus:outline-none"
+              className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded focus:outline-none"
             />
             <p className="text-xs italic text-red-500">{errors.id?.message}</p>
           </div>
-          <div className="mb-4 w-full pr-2 pl-2 md:w-1/3">
-            <label className="mb-2 block text-sm font-bold text-gray-700">First Name</label>
+          <div className="w-full pl-2 pr-2 mb-4 md:w-1/3">
+            <label className="block mb-2 text-sm font-bold text-gray-700">First Name</label>
             <input
               type="text"
               {...register("first_name")}
-              className="   mb-3  w-full rounded border py-2 px-3 leading-tight text-gray-700 focus:outline-none"
+              className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded focus:outline-none"
             />
             <p className="text-xs italic text-red-500">{errors.first_name?.message}</p>
           </div>
-          <div className="mb-4 w-full pr-2 pl-2 md:w-1/3">
-            <label className="mb-2 block text-sm font-bold text-gray-700">Last Name</label>
+          <div className="w-full pl-2 pr-2 mb-4 md:w-1/3">
+            <label className="block mb-2 text-sm font-bold text-gray-700">Last Name</label>
             <input
               type="text"
               {...register("last_name")}
-              className="   mb-3  w-full rounded border py-2 px-3 leading-tight text-gray-700 focus:outline-none"
+              className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded focus:outline-none"
             />
             <p className="text-xs italic text-red-500">{errors.last_name?.message}</p>
           </div>
-          <div className="mb-4 w-full pr-2 pl-2 md:w-1/3">
-            <label className="mb-2 block text-sm font-bold text-gray-700">Email</label>
+          <div className="w-full pl-2 pr-2 mb-4 md:w-1/3">
+            <label className="block mb-2 text-sm font-bold text-gray-700">Email</label>
             <input
               type="text"
               {...register("email")}
-              className="   mb-3  w-full rounded border py-2 px-3 leading-tight text-gray-700 focus:outline-none"
+              className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded focus:outline-none"
             />
             <p className="text-xs italic text-red-500">{errors.email?.message}</p>
           </div>
-          <div className="mb-4 w-full pr-2 pl-2 md:w-1/3">
-            <label className="mb-2 block text-sm font-bold text-gray-700">verify</label>
+          <div className="w-full pl-2 pr-2 mb-4 md:w-1/3">
+            <label className="block mb-2 text-sm font-bold text-gray-700">verify</label>
             <select
-              className="mb-3 w-full rounded border bg-white py-2 px-3 leading-tight text-gray-700 focus:outline-none"
+              className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 bg-white border rounded focus:outline-none"
               {...register("verify")}
             >
               {selectVerified.map((option) => (
@@ -312,10 +312,10 @@ const AdminCustomerListPage = () => {
             <p className="text-xs italic text-red-500"></p>
           </div>
 
-          <div className="mb-4 w-full pr-2 pl-2 md:w-1/3">
-            <label className="mb-2 block text-sm font-bold text-gray-700">Status</label>
+          <div className="w-full pl-2 pr-2 mb-4 md:w-1/3">
+            <label className="block mb-2 text-sm font-bold text-gray-700">Status</label>
             <select
-              className="mb-3 w-full rounded border bg-white py-2 px-3 leading-tight text-gray-700 focus:outline-none"
+              className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 bg-white border rounded focus:outline-none"
               {...register("status")}
             >
               {selectStatus.map((option) => (
@@ -353,7 +353,7 @@ const AdminCustomerListPage = () => {
         updatePageSize={updatePageSize}
       />
 
-      <div className="flex justify-end bg-white py-3 pt-5">
+      <div className="flex justify-end py-3 pt-5 bg-white">
         <Link
           to="/admin/column_order/customer"
           className="ml-5 mb-1 mr-3 flex items-center  rounded !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none"
@@ -371,10 +371,10 @@ const AdminCustomerListPage = () => {
         </DownloadTableExcel>
       </div>
 
-      <div className="overflow-x-auto rounded normal-case">
-        <div className=" overflow-x-auto border-t-0 border-gray-200 ">
+      <div className="overflow-x-auto normal-case rounded">
+        <div className="overflow-x-auto border-t-0 border-gray-200 ">
           <table
-            className="min-w-full divide-y divide-gray-200 border border-t-0 bg-white"
+            className="min-w-full bg-white border border-t-0 divide-y divide-gray-200"
             id="table-to-xls"
             ref={tableRef}
           >
@@ -384,7 +384,7 @@ const AdminCustomerListPage = () => {
                   <th
                     key={index}
                     scope="col"
-                    className="cursor-pointer whitespace-nowrap px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                    className="px-6 py-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer whitespace-nowrap"
                     onClick={() => onSort(column.accessor)}
                   >
                     {column.header}
@@ -406,7 +406,7 @@ const AdminCustomerListPage = () => {
                         return (
                           <td
                             key={index}
-                            className="gap-3 whitespace-nowrap px-6 py-4"
+                            className="gap-3 px-6 py-4 whitespace-nowrap"
                           >
                             {row.photo ? (
                               <button
@@ -439,7 +439,7 @@ const AdminCustomerListPage = () => {
                         return (
                           <td
                             key={index}
-                            className="whitespace-nowrap px-6 py-4"
+                            className="px-6 py-4 whitespace-nowrap"
                           >
                             <span className={`${row[cell.accessor] === 1 ? "text-black" : "text-[#98A2B3]"} rounded-full border border-[#EAECF0] bg-[#F9FAFB] py-[2px] px-[10px]`}>
                               {" "}
@@ -452,7 +452,7 @@ const AdminCustomerListPage = () => {
                         return (
                           <td
                             key={index}
-                            className="whitespace-nowrap px-6 py-4 normal-case"
+                            className="px-6 py-4 normal-case whitespace-nowrap"
                           >
                             {cell.idPrefix + row[cell.accessor]}
                           </td>
@@ -463,7 +463,7 @@ const AdminCustomerListPage = () => {
                         return (
                           <td
                             key={index}
-                            className="whitespace-nowrap px-6 py-4"
+                            className="px-6 py-4 whitespace-nowrap"
                           >
                             {cell.mapping[row[cell.accessor]] ?? "N/A"}
                           </td>
@@ -473,7 +473,7 @@ const AdminCustomerListPage = () => {
                       return (
                         <td
                           key={index}
-                          className="whitespace-nowrap px-6 py-4"
+                          className="px-6 py-4 whitespace-nowrap"
                         >
                           {row[cell.accessor]}
                         </td>

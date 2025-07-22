@@ -201,7 +201,7 @@ const AdminHostListPage = () => {
   return (
     <>
       <form
-        className="rounded rounded-b-none border border-b-0 bg-white p-5"
+        className="p-5 bg-white border border-b-0 rounded rounded-b-none"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex justify-between">
@@ -211,22 +211,22 @@ const AdminHostListPage = () => {
             text="Add New host"
           />
         </div>
-        <div className="filter-form-holder mt-2 flex flex-wrap">
-          <div className="mb-4 w-full pr-2 md:w-1/3">
-            <label className="mb-2 block text-sm font-bold text-gray-700">ID</label>
+        <div className="flex flex-wrap mt-2 filter-form-holder">
+          <div className="w-full pr-2 mb-4 md:w-1/3">
+            <label className="block mb-2 text-sm font-bold text-gray-700">ID</label>
             <input
               type="text"
               {...register("id")}
-              className="  focus:shadow-outline  mb-3 w-full rounded border py-2 px-3 leading-tight text-gray-700 focus:outline-none"
+              className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded focus:shadow-outline focus:outline-none"
             />
             <p className="text-xs italic text-red-500">{errors.id?.message}</p>
           </div>
-          <div className="mb-4 w-full pr-2 md:w-1/3">
-            <label className="mb-2 block text-sm font-bold text-gray-700">Email</label>
+          <div className="w-full pr-2 mb-4 md:w-1/3">
+            <label className="block mb-2 text-sm font-bold text-gray-700">Email</label>
             <input
               type="email"
               {...register("email")}
-              className="  focus:shadow-outline  mb-3 w-full rounded border py-2 px-3 leading-tight text-gray-700 focus:outline-none"
+              className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded focus:shadow-outline focus:outline-none"
             />
             <p className="text-xs italic text-red-500">{errors.email?.message}</p>
           </div>
@@ -253,7 +253,7 @@ const AdminHostListPage = () => {
         updatePageSize={updatePageSize}
       />
 
-      <div className="flex justify-end bg-white py-3 pt-5">
+      <div className="flex justify-end py-3 pt-5 bg-white">
         <Link
           to="/admin/column_order/host"
           className="ml-5 mb-1 mr-3 flex items-center  rounded !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none"
@@ -273,7 +273,7 @@ const AdminHostListPage = () => {
         <div className="overflow-x-auto border-b border-gray-200 shadow ">
           <Table
             ref={tableRef}
-            className="min-w-full divide-y divide-gray-200 border border-t-0 bg-white"
+            className="min-w-full bg-white border border-t-0 divide-y divide-gray-200"
             id="table-to-xls"
           >
             <thead className="cursor-pointer bg-gray-50">
@@ -282,7 +282,7 @@ const AdminHostListPage = () => {
                   <th
                     key={index}
                     scope="col"
-                    className="cursor-pointer whitespace-nowrap px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                    className="px-6 py-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer whitespace-nowrap"
                     onClick={() => onSort(column.accessor)}
                   >
                     {column.header}
@@ -304,7 +304,7 @@ const AdminHostListPage = () => {
                         return (
                           <td
                             key={index}
-                            className="whitespace-nowrap px-6 py-4"
+                            className="px-6 py-4 whitespace-nowrap"
                           >
                             {cell.accessor.split(",").map((accessor, i) => (
                               <span
@@ -322,7 +322,7 @@ const AdminHostListPage = () => {
                         return (
                           <td
                             key={index}
-                            className="gap-3 whitespace-nowrap px-6 py-4"
+                            className="gap-3 px-6 py-4 whitespace-nowrap"
                           >
                             {row.photo ? (
                               <button
@@ -355,7 +355,7 @@ const AdminHostListPage = () => {
                         return (
                           <td
                             key={index}
-                            className="whitespace-nowrap px-6 py-4"
+                            className="px-6 py-4 whitespace-nowrap"
                           >
                             <span className={`${row[cell.accessor] === 1 ? "text-black" : "text-[#98A2B3]"} rounded-full border border-[#EAECF0] bg-[#F9FAFB] py-[2px] px-[10px]`}>
                               {" "}
@@ -369,7 +369,7 @@ const AdminHostListPage = () => {
                         return (
                           <td
                             key={index}
-                            className="whitespace-nowrap px-6 py-4 normal-case "
+                            className="px-6 py-4 normal-case whitespace-nowrap "
                           >
                             <button
                               className="border-r border-gray-200 bg-gradient-to-r from-[#33D4B7] to-[#0D9895] bg-clip-text pr-2 font-bold text-transparent"
@@ -386,7 +386,7 @@ const AdminHostListPage = () => {
                         return (
                           <td
                             key={index}
-                            className="whitespace-nowrap px-6 py-4 normal-case "
+                            className="px-6 py-4 normal-case whitespace-nowrap "
                           >
                             <span className="ml-2">&#36;{(row[cell.accessor] ? row[cell.accessor] : 0).toFixed(2)}</span>
                           </td>
@@ -397,7 +397,7 @@ const AdminHostListPage = () => {
                         return (
                           <td
                             key={index}
-                            className="whitespace-nowrap px-6 py-4 normal-case"
+                            className="px-6 py-4 normal-case whitespace-nowrap"
                           >
                             {cell.idPrefix + row[cell.accessor]}
                           </td>
@@ -407,7 +407,7 @@ const AdminHostListPage = () => {
                       return (
                         <td
                           key={index}
-                          className="whitespace-nowrap px-6 py-4"
+                          className="px-6 py-4 whitespace-nowrap"
                         >
                           {row[cell.accessor]}
                         </td>

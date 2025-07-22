@@ -130,7 +130,7 @@ export default function HostVerificationPage() {
   };
 
   return (
-    <div className="pb-16 normal-case">
+    <div className="pb-16 normal-case verification-step">
       <div>
         <button
           type="button"
@@ -284,7 +284,8 @@ export default function HostVerificationPage() {
         <LoadingButton
           loading={loading}
           type="submit"
-          className={`login-btn-gradient rounded tracking-wide text-white outline-none focus:outline-none ${loading ? "py-1" : "py-2"} mt-8 w-[333px] max-w-full`}
+          data-tour="submit-document"
+          className={`login-btn-gradient rounded tracking-wide text-white outline-none focus:outline-none submit-document-btn ${loading ? "py-1" : "py-2"} mt-8 w-[333px] max-w-full`}
           disabled={isDisabled()}
         >
           Submit Document

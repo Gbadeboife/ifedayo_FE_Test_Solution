@@ -13,6 +13,14 @@ const DateTimePicker = ({ defaultDate, register, fieldNames, setValue, showCalen
   const [to, setTo] = useState(toDefault ?? "");
 
   const onApply = () => {
+    // Validate times before applying
+    if (from && to) {
+      const fromMinutes = timeToMinutes(from);
+      const toMinutes = timeToMinutes(to);
+      if (toMinutes <= fromMinutes) {
+        return; // Don't apply invalid time range
+      }
+    }
     setValue("from", from);
     setValue("to", to);
     setValue("selectedDate", selectedDate);
@@ -39,6 +47,14 @@ const DateTimePicker = ({ defaultDate, register, fieldNames, setValue, showCalen
     }
     
     return hours * 60 + minutes;
+  };
+
+  // Helper function to validate time selection
+  const validateTimeSelection = (newFrom, newTo) => {
+    if (!newFrom || !newTo) return true;
+    const fromMinutes = timeToMinutes(newFrom);
+    const toMinutes = timeToMinutes(newTo);
+    return toMinutes > fromMinutes;
   };
 
   // Helper function to check if a time slot conflicts with booked slots
@@ -179,7 +195,11 @@ const DateTimePicker = ({ defaultDate, register, fieldNames, setValue, showCalen
                           if (from == "") {
                             setFrom(e.target.innerText);
                           } else {
-                            setTo(e.target.innerText);
+                            // Validate before setting new "to" time
+                            const newTo = e.target.innerText;
+                            if (validateTimeSelection(from, newTo)) {
+                              setTo(newTo);
+                            }
                           }
                         }}
                         disabled={(() => {

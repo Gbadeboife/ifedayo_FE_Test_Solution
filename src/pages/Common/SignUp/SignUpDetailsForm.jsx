@@ -347,7 +347,7 @@ export default function SignUpDetailsForm() {
                 type="checkbox"
                 id="privacy-agreement"
                 checked={privacyRead}
-                onChange={(e) => setPrivacyRead(e.target.checked)}
+                onChange={() => setPrivacyModalOpen(true)}
                 className="mt-1"
               />
               <label htmlFor="privacy-agreement" className="text-sm normal-case text-gray-500">
@@ -382,11 +382,13 @@ export default function SignUpDetailsForm() {
           isOpen={modalOpen}
           closeModal={closeModal}
           setIsAgreed={setTermsAgreed}
+          isAgreed={termsAgreed}
           />
           <PrivacyAndPolicyModal
           isOpen={privacyOpen}
           closeModal={closePrivacyModal}
           setIsRead={setPrivacyRead}
+          isRead={privacyRead}
           />
     </>
   );

@@ -351,18 +351,18 @@ const SpaceDetailsTwo = () => {
   useEffect(() => {
     // Only load existing images if they actually exist and are not empty
     if (spaceData.pictures && spaceData.pictures.length > 0) {
-      for (let i = 0; i < spaceData.pictures.length; i++) {
-        const url = spaceData.pictures[i];
+    for (let i = 0; i < spaceData.pictures.length; i++) {
+      const url = spaceData.pictures[i];
         if (url) { // Only process if URL exists
-          getFileFromUrl(url).then((picFile) => {
+      getFileFromUrl(url).then((picFile) => {
             if (picFile) { // Only add if file was successfully created
-              setPictures((prev) => {
-                var copy = [...prev];
-                copy[i] = picFile;
-                return copy;
-              });
+        setPictures((prev) => {
+          var copy = [...prev];
+          copy[i] = picFile;
+          return copy;
+        });
             }
-          });
+      });
         }
       }
     }

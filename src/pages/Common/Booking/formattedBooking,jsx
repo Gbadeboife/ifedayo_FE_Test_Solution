@@ -364,13 +364,11 @@ const BookingPreviewPage = () => {
                 <p className="font-semibold text-[#344054]"> ${((total_additional_guest_rate + total_rate + addon_cost) + (((total_additional_guest_rate + total_rate + addon_cost) * (bookingData?.tax ?? tax)) / 100) + (((total_additional_guest_rate + total_rate + addon_cost) * commission) / 100)).toFixed(2)}</p>
               </div>
             </div>
-            {/* {!(tax == null || commission == null) && (
-              <ReCAPTCHA
-                className="recaptcha-v2 mb-2"
-                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-                onChange={onChange}
-              />
-            )} */}
+            <ReCAPTCHA
+              className="recaptcha-v2 mb-2"
+              sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+              onChange={onChange}
+            />
 
             <LoadingButton
               loading={loading}

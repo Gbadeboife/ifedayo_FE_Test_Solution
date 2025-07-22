@@ -217,7 +217,7 @@ const HostAddOnListPage = () => {
           onClick={()=>setAddOnModal(true)}
           className="ml-5 mb-1 flex items-center rounded  !bg-gradient-to-r from-[#33D4B7] to-[#0D9895] px-6 py-2 text-sm font-semibold text-white outline-none focus:outline-none"
       >
-        <PlusCircleIcon className="h-6 w-6" />
+        <PlusCircleIcon className="w-6 h-6" />
         <span className="ml-2">Add add-on</span>
       </button>
       </div>

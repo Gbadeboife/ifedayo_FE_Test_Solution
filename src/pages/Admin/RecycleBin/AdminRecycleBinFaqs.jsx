@@ -151,17 +151,17 @@ export default function AdminRecycleBinFaqs() {
   return (
     <>
       <form
-        className="rounded rounded-b-none border border-b-0 bg-white p-5"
+        className="p-5 bg-white border border-b-0 rounded rounded-b-none"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="max-w-5xl">
           <div className="flex justify-between">
             <h4 className="text-2xl font-medium">Recycle Bin (Faqs)</h4>
           </div>
-          <div className="filter-form-holder mt-10 flex flex-wrap">
-            <div className="mb-4 w-full pr-2 pl-2 md:w-1/3">
+          <div className="flex flex-wrap mt-10 filter-form-holder">
+            <div className="w-full pl-2 pr-2 mb-4 md:w-1/3">
               <label
-                className="mb-2 block text-sm font-bold text-gray-700"
+                className="block mb-2 text-sm font-bold text-gray-700"
                 htmlFor="id"
               >
                 ID
@@ -173,9 +173,9 @@ export default function AdminRecycleBinFaqs() {
               <p className="text-xs italic text-red-500">{errors.id?.message}</p>
             </div>
 
-            <div className="mb-4 w-full pr-2 pl-2 md:w-1/3">
+            <div className="w-full pl-2 pr-2 mb-4 md:w-1/3">
               <label
-                className="mb-2 block text-sm font-bold text-gray-700"
+                className="block mb-2 text-sm font-bold text-gray-700"
                 htmlFor="deleted_at"
               >
                 Date Deleted
@@ -183,7 +183,7 @@ export default function AdminRecycleBinFaqs() {
               <input
                 type={"date"}
                 {...register("deleted_at")}
-                className="none mb-3 w-full rounded border bg-white py-2 px-3 leading-tight text-gray-700 focus:outline-none"
+                className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 bg-white border rounded none focus:outline-none"
               />
               <p className="text-xs italic text-red-500">{errors.deleted_at?.message}</p>
             </div>
@@ -204,7 +204,7 @@ export default function AdminRecycleBinFaqs() {
         </div>
       </form>
 
-      <div className="flex justify-end bg-white px-6 pt-4">
+      <div className="flex justify-end px-6 pt-4 bg-white">
         <SwitchBulkMode
           enabled={bulkMode}
           setEnabled={setBulkMode}
@@ -213,7 +213,7 @@ export default function AdminRecycleBinFaqs() {
 
       {bulkMode && (
         <div className="flex items-center justify-between bg-white py-4 pl-2 pr-6 font-medium text-[#667085]">
-          <label className="flex cursor-pointer items-center gap-2">
+          <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
               name="bulk-mode"
@@ -252,20 +252,20 @@ export default function AdminRecycleBinFaqs() {
           {loading ? (
             <div className="flex items-center justify-center py-12">Loading...</div>
           ) : (
-            <table className="min-w-full divide-y divide-gray-200 border border-t-0 bg-white">
+            <table className="min-w-full bg-white border border-t-0 divide-y divide-gray-200">
               <thead className="cursor-pointer bg-gray-50">
                 <tr className="cursor-pointer">
                   {bulkMode && (
                     <th
                       scope="col"
-                      className="px-2 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                      className="px-2 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                     ></th>
                   )}
                   {columns.map((column, index) => (
                     <th
                       key={index}
                       scope="col"
-                      className="cursor-pointer whitespace-nowrap px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                      className="px-6 py-4 text-xs font-medium tracking-wider text-left text-gray-500 uppercase cursor-pointer whitespace-nowrap"
                     >
                       {column.header}
                       {column.isSorted}
@@ -274,7 +274,7 @@ export default function AdminRecycleBinFaqs() {
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 normal-case">
+              <tbody className="normal-case divide-y divide-gray-200">
                 {data
                   .sort((a, b) => new Date(b.deleted_at) - new Date(a.deleted_at))
                   .map((row, i) => {
@@ -284,7 +284,7 @@ export default function AdminRecycleBinFaqs() {
                         key={i}
                       >
                         {bulkMode && (
-                          <td className="whitespace-nowrap px-2 py-2">
+                          <td className="px-2 py-2 whitespace-nowrap">
                             <input
                               type="checkbox"
                               name="bulk-mode"
@@ -313,7 +313,7 @@ export default function AdminRecycleBinFaqs() {
                             return (
                               <td
                                 key={index}
-                                className="whitespace-nowrap px-6 py-4"
+                                className="px-6 py-4 whitespace-nowrap"
                               >
                                 {cell.format(row[cell.accessor])}
                               </td>
@@ -323,7 +323,7 @@ export default function AdminRecycleBinFaqs() {
                             return (
                               <td
                                 key={index}
-                                className="gap-3 whitespace-nowrap flex items-center px-6 py-4"
+                                className="flex items-center gap-3 px-6 py-4 whitespace-nowrap"
                               >
                                 {(row.email) &&
                                   <div className="w-fit border-r border-gray-200 pr-4 text-[#667085]">
@@ -351,7 +351,7 @@ export default function AdminRecycleBinFaqs() {
                             return (
                               <td
                                 key={index}
-                                className="whitespace-nowrap px-6 py-4"
+                                className="px-6 py-4 whitespace-nowrap"
                               >
                                 {getUserDetail(row?.user_id || row?.host_id)}
                               </td>
@@ -361,7 +361,7 @@ export default function AdminRecycleBinFaqs() {
                             return (
                               <td
                                 key={index}
-                                className="whitespace-nowrap px-6 py-4"
+                                className="px-6 py-4 whitespace-nowrap"
                               >
                                 {getUserDetail(row?.id)}
                               </td>
@@ -371,7 +371,7 @@ export default function AdminRecycleBinFaqs() {
                             return (
                               <td
                                 key={index}
-                                className="whitespace-nowrap px-6 py-4"
+                                className="px-6 py-4 whitespace-nowrap"
                               >
                                 {getSpaceHost(row?.property_id)}
                               </td>
@@ -381,7 +381,7 @@ export default function AdminRecycleBinFaqs() {
                             return (
                               <td
                                 key={index}
-                                className="whitespace-nowrap px-6 py-4"
+                                className="px-6 py-4 whitespace-nowrap"
                               >
                                 {getAddonOwner(row?.id)}
                               </td>
@@ -391,7 +391,7 @@ export default function AdminRecycleBinFaqs() {
                             return (
                               <td
                                 key={index}
-                                className="whitespace-nowrap px-6 py-4"
+                                className="px-6 py-4 whitespace-nowrap"
                               >
                                 {cell.mapping[row[cell.accessor]]}
                               </td>
@@ -402,7 +402,7 @@ export default function AdminRecycleBinFaqs() {
                           return (
                             <td
                               key={index}
-                              className="whitespace-nowrap px-6 py-4"
+                              className="px-6 py-4 whitespace-nowrap"
                             >
                               {row[cell.accessor]}
                             </td>

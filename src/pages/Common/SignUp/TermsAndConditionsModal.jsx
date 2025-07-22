@@ -7,9 +7,8 @@ import { useContext } from "react";
 import { useState } from "react";
 import { Fragment } from "react";
 
-export default function TermsAndConditionsModal({ isOpen, closeModal, setIsAgreed }) {
+export default function TermsAndConditionsModal({ isOpen, closeModal, setIsAgreed, isAgreed }) {
   const [termsAndConditions, setTermsAndCondition] = useState("");
-  const [agreed, setAgreed] = useState(false);
   const { dispatch: globalDispatch } = useContext(GlobalContext);
 
   async function fetchTermsAndConditions() {
@@ -33,6 +32,7 @@ export default function TermsAndConditionsModal({ isOpen, closeModal, setIsAgree
   useEffect(() => {
     fetchTermsAndConditions();
   }, []);
+
   return (
     <>
       <div className={`${isOpen ? "flex" : "hidden"} fixed inset-0 items-center justify-center`}></div>
@@ -96,8 +96,11 @@ export default function TermsAndConditionsModal({ isOpen, closeModal, setIsAgree
                       type={"checkbox"}
                       name="i-agree"
                       id="i-agree"
-                      checked={agreed}
-                      onChange={() => {setAgreed((prev) => !prev); setIsAgreed((prev) => !prev); closeModal()}}
+                      checked={isAgreed}
+                      onChange={() => {
+                        setIsAgreed((prev) => !prev);
+                        closeModal();
+                      }}
                     />
                     <label
                       htmlFor="i-agree"

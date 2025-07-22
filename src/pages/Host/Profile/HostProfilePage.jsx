@@ -192,7 +192,7 @@ export default function HostProfilePage() {
   return (
     <div className="pt-[44px] pb-16 normal-case text-[#475467]">
       <div className="flex flex-wrap-reverse justify-between ">
-        <div className="flex max-w-3xl flex-grow flex-col justify-between md:flex-row md:items-center">
+        <div className="flex flex-col justify-between flex-grow max-w-3xl md:flex-row md:items-center">
           <div className="mb-[16px] flex flex-col">
             <h3 className="text-xl font-semibold">Your photo</h3>
             <small className="text-xs md:text-sm">{getProfilePhotoMessage(globalState.user.is_photo_approved)}</small>
@@ -207,7 +207,7 @@ export default function HostProfilePage() {
             />
             <div>
               <label
-                className="photo-step mr-3 cursor-pointer font-semibold underline"
+                className="mr-3 font-semibold underline cursor-pointer photo-step"
                 htmlFor="profilePic"
               >
                 Update{" "}
@@ -230,7 +230,7 @@ export default function HostProfilePage() {
           </div>
         </div>
         <div className="mb-12 flex w-full justify-between md:mb-0 md:w-[unset] md:flex-col md:justify-start">
-          <p className="mb-2 self-end">Profile status</p>
+          <p className="self-end mb-2">Profile status</p>
           <div data-tour="fourth-step" className="flex fourth-step">
             {![0, 1].includes(globalState.user.verificationStatus) && (
               <Link
@@ -285,16 +285,16 @@ export default function HostProfilePage() {
       </div>
       
       <hr className="my-[37px]" />
-      <div className="grid sm:flex flex-co items-start gap-4">
+      <div className="grid items-start gap-4 sm:flex flex-co">
         <Link
           to={"/account/profile/rules-templates"}
-          className="rounded-md border border-primary-dark px-4 py-2 text-sm text-black duration-200 hover:bg-primary-dark hover:text-white"
+          className="px-4 py-2 text-sm text-black duration-200 border rounded-md border-primary-dark hover:bg-primary-dark hover:text-white"
         >
           Manage Property Rules Template
         </Link>
         <Link
           to={"/account/profile/rules-templates/add"}
-          className="rounded-md border border-primary-dark px-4 py-2 text-sm text-black duration-200 hover:bg-primary-dark hover:text-white"
+          className="px-4 py-2 text-sm text-black duration-200 border rounded-md border-primary-dark hover:bg-primary-dark hover:text-white"
         >
           Add Property Rules Template
         </Link>

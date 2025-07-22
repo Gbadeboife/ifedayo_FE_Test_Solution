@@ -130,7 +130,7 @@ export default function CustomerVerificationPage() {
   };
 
   return (
-    <div className="pb-16 normal-case">
+    <div className="pb-16 normal-case verification-step">
       <div>
         <button
           type="button"
@@ -147,17 +147,17 @@ export default function CustomerVerificationPage() {
       </div>
       <h1 className="mb-4 text-2xl font-semibold md:text-5xl">Identity Verification</h1>
       <div className="mb-[32px] max-w-3xl rounded-lg border border-[#EAECF0] bg-[#F9FAFB] px-[24px] py-[16px]">
-        <h3 className="text-lg flex items-center gap-2 font-semibold">
+        <h3 className="flex items-center gap-2 text-lg font-semibold">
           <SecurityIcon />
           <span>Safety is our priority</span>
         </h3>
-        <p className="ml-5 max-w-xl text-sm leading-relaxed">
+        <p className="max-w-xl ml-5 text-sm leading-relaxed">
           To establish trust for all parties we verify both hosts and guests. Your personal information is secure. We will never share your information with third parties.
         </p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <p className="mb-2 font-semibold">Verification Documents.</p>
-        <div data-tour="fifth-step" className="fifth-step radio-container mb-8 flex justify-between md:max-w-lg">
+        <div data-tour="fifth-step" className="flex justify-between mb-8 fifth-step radio-container md:max-w-lg">
           <label
             htmlFor="driversLicense"
             className="cursor-pointer"
@@ -202,7 +202,7 @@ export default function CustomerVerificationPage() {
                     <img
                       src={readImage(frontImage, "front-preview")}
                       id="front-preview"
-                      className="h-full w-full rounded-sm object-cover"
+                      className="object-cover w-full h-full rounded-sm"
                     />
                   ) : (
                     <>
@@ -226,7 +226,7 @@ export default function CustomerVerificationPage() {
                     <img
                       src={readImage(backImage, "back-preview")}
                       id="back-preview"
-                      className="h-full w-full rounded-sm object-cover"
+                      className="object-cover w-full h-full rounded-sm"
                     />
                   ) : (
                     <>
@@ -252,7 +252,7 @@ export default function CustomerVerificationPage() {
                   <img
                     src={readImage(passport, "passport-preview")}
                     id="passport-preview"
-                    className="h-full w-full rounded-sm object-cover"
+                    className="object-cover w-full h-full rounded-sm"
                   />
                 ) : (
                   <>
@@ -266,9 +266,9 @@ export default function CustomerVerificationPage() {
             </FileUploader>
           )}
         </div>
-        <div className="my-8 max-w-lg">
+        <div className="max-w-lg my-8">
           <label
-            className="mb-2 block text-sm font-bold text-gray-700"
+            className="block mb-2 text-sm font-bold text-gray-700"
             htmlFor="expiry_date"
           >
             Expiration Date
@@ -284,7 +284,8 @@ export default function CustomerVerificationPage() {
         <LoadingButton
           loading={loading}
           type="submit"
-          className={`login-btn-gradient rounded tracking-wide text-white outline-none focus:outline-none ${loading ? "py-1" : "py-2"} mt-8 w-[333px] max-w-full`}
+          data-tour="submit-document"
+          className={`login-btn-gradient rounded tracking-wide text-white outline-none focus:outline-none submit-document-btn ${loading ? "py-1" : "py-2"} mt-8 w-[333px] max-w-full`}
           disabled={isDisabled()}
         >
           Submit Document
@@ -302,7 +303,7 @@ export default function CustomerVerificationPage() {
           <p className="mb-4 text-sm text-gray-500">Once we verify your document you will receive an email. It usually takes up to 24 hours.</p>
           <button
             type="button"
-            className="login-btn-gradient mt-4 w-full rounded py-2 tracking-wide text-white  outline-none focus:outline-none"
+            className="w-full py-2 mt-4 tracking-wide text-white rounded outline-none login-btn-gradient focus:outline-none"
             onClick={() => {
               setVerified(false);
               navigate(searchParams.get("redirect_uri") ?? -1);

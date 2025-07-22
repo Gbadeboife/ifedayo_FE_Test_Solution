@@ -1631,7 +1631,7 @@ function Main() {
                   onClick={() => setCurrentStep(3)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
                 <button onClick={() => {
                   setCurrentStep(5);
-                  transition(true)
+                  if (typeof transition === 'function') transition(true)
                 }
                 } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next Step</button>
               </div>
@@ -1653,7 +1653,7 @@ function Main() {
         mutationObservables: ['[data-tour="fourth-step"]'],
       },
       {
-        selector: '[data-tour="fifth-step"]',
+        selector: 'body',
         content: ({ goTo, inDOM, setCurrentStep }) => (
           <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Select and Upload a Government issued ID or Passport.</p>
@@ -1675,35 +1675,111 @@ function Main() {
           popover: (base) => ({
             ...base,
             boxShadow: '0 0 3em rgba(0, 0, 0, 0.5)',
-            marginTop: '30px',
-            marginLeft: '30px',
             backgroundColor: '#dedede',
+            bottom: 0,
+            top: 'unset',
+            left: 0,
+            right: 0,
+            margin: 0,
+            width: '100%',
+            borderRadius: 0,
+            padding: '30px'
           })
         },
-        mutationObservables: [`[data-tour-id="mask-position-recompute"]`]
+        action: () => {
+          navigate("/account/verification");
+        },
       },
-
       {
-        selector: "",
+        selector: '.verification-step',
         content: ({ goTo, inDOM, setCurrentStep }) => (
           <div className="flex flex-col items-center justify-center">
+            <p className="font-semibold text-[18px]">Navigate to Verification</p>
+            <span className="mt-1 text-sm font-semibold">You'll need to verify your identity with a government-issued ID or passport.</span>
+            <div className="flex justify-start w-full gap-4">
+              <button onClick={() =>
+                setCurrentStep(4)
+              } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
+              <button onClick={() =>
+                setCurrentStep(6)
+              } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
+            </div>
+          </div>
+        ),
+        position: 'center',
+        action: () => {
+          navigate("/account/verification");
+        },
+      },
+      {
+        selector: '[data-tour="submit-document"]',
+        content: ({ goTo, inDOM, setCurrentStep }) => (
+          <div className="flex flex-col items-center justify-center">
+            <p className="font-semibold text-[18px]">Click the submit button</p>
+            <span className="mt-1 text-sm font-semibold">Once approved, you will receive an email with approval confirmation from our support team and your account will be activated. For questions or concerns, please navigate to the <Link className="text-blue-500 underline" to="/faq">FAQs</Link> page.</span>
+            <div className="flex justify-start w-full gap-4">
+              <button onClick={() =>
+                setCurrentStep(5)
+              } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
+              <button onClick={() =>
+                setCurrentStep(7)
+              } className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>
+            </div>
+          </div>
+        ),
+        position: 'bottom',
+        styles: {
+          popover: (base) => ({
+            ...base,
+            boxShadow: '0 0 3em rgba(0, 0, 0, 0.5)',
+            backgroundColor: '#dedede',
+            bottom: 0,
+            top: 'unset',
+            left: 0,
+            right: 0,
+            margin: 0,
+            width: '100%',
+            borderRadius: 0,
+            padding: '30px'
+          })
+        },
+        action: () => {
+          if (window.location.pathname !== "/account/verification") {
+            navigate("/account/verification");
+          }
+        },
+      },
+      
 
+      {
+        selector: 'body',
+        content: ({ goTo, inDOM, setCurrentStep }) => (
+          <div className="flex flex-col items-center justify-end min-h-[200px]">
+            <p className="font-semibold text-[18px]">Verify your identity to continue</p>
+            <span className="mt-1 text-sm font-semibold">You need to submit your verification documents to activate your account.</span>
+            <div className="flex justify-start w-full gap-4 mt-4">
+              <button onClick={() => setCurrentStep(4)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] rounded-md">Prev step</button>
+              <button onClick={() => setCurrentStep(6)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] rounded-md">Next step</button>
+            </div>
           </div>
         ),
         styles: {
           popover: (base) => ({
             ...base,
             boxShadow: '0 0 3em rgba(0, 0, 0, 0.5)',
-            marginTop: '-30px',
-            marginLeft: '20px',
             backgroundColor: '#dedede',
+            bottom: 0,
+            top: 'unset',
+            left: 0,
+            right: 0,
+            margin: 0,
+            width: '100%',
+            borderRadius: 0,
+            padding: '30px',
           })
         },
-        action: () => {
-          if (pathname != "/account/verification") {
-            navigate("/account/verification");
-          }
-        },
+        position: 'bottom',
+
       },
       {
         selector: ".tenth-step",
@@ -1738,7 +1814,7 @@ function Main() {
         content: ({ goTo, inDOM, setCurrentStep }) => (
           <div className="flex flex-col items-center justify-center">
             <p className="font-semibold text-[18px]">Under Payments, view your payment history</p>
-            <span className="mt-1 text-sm font-semibold">Payments you’ve received from Customers after bookings are completed.</span>
+            <span className="mt-1 text-sm font-semibold">Payments you've received from Customers after bookings are completed.</span>
             {/* <span className="mt-1 text-sm font-semibold">Once approved, you will receive an email with approval confirmation from our support team and your account will be activated. For questions or concerns, please navigate to the <Link className="text-blue-500 underline" to="/faq">FAQs</Link> page.</span> */}
             <div className="flex justify-start w-full gap-4">
               <button onClick={() => setCurrentStep(7)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
@@ -1989,7 +2065,37 @@ function Main() {
           navigate("/");
         },
       },
-
+      // Step 7: Highlight Submit Document button, add heading/body, allow prev/next
+      {
+        selector: '.submit-document-btn',
+        content: ({ goTo, inDOM, setCurrentStep }) => (
+          <div className="flex flex-col items-center justify-center">
+            <p className="font-semibold text-[18px] mb-2">Click the submit button</p>
+            <span className="mt-1 mb-2 text-sm font-semibold">Once approved, you will receive an email with approval confirmation from our support team and your account will be activated. For questions or concerns, please navigate to <Link to="/faq" className="text-blue-500 underline">FAQs</Link> page.</span>
+            <div className="flex justify-start w-full gap-4 mt-2">
+              <button onClick={() => setCurrentStep(5)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] rounded-md">Prev step</button>
+              <button onClick={() => setCurrentStep(7)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] rounded-md">Next step</button>
+            </div>
+          </div>
+        ),
+        styles: {
+          popover: (base) => ({
+            ...base,
+            boxShadow: '0 0 3em rgba(0, 0, 0, 0.5)',
+            backgroundColor: '#dedede',
+            marginTop: '30px',
+            marginLeft: '30px',
+          })
+        },
+        position: 'bottom',
+        highlightedSelectors: ['.submit-document-btn'],
+        action: () => {
+          if (pathname !== '/account/verification') {
+            navigate('/account/verification');
+          }
+        },
+        mutationObservables: ['.submit-document-btn'],
+      },
     ]
 
   const customerSteps = [
@@ -2169,9 +2275,15 @@ function Main() {
     },
 
     {
-      selector: "",
+      selector: 'body',
       content: ({ goTo, inDOM, setCurrentStep }) => (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-end min-h-[200px]">
+          <p className="font-semibold text-[18px]">Verify your identity to continue</p>
+          <span className="mt-1 text-sm font-semibold">You need to submit your verification documents to activate your account.</span>
+          <div className="flex justify-start w-full gap-4 mt-4">
+            <button onClick={() => setCurrentStep(4)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] rounded-md">Prev step</button>
+            <button onClick={() => setCurrentStep(6)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] rounded-md">Next step</button>
+          </div>
         </div>
       ),
       styles: {
@@ -2179,13 +2291,20 @@ function Main() {
           ...base,
           boxShadow: '0 0 3em rgba(0, 0, 0, 0.5)',
           backgroundColor: '#dedede',
-          marginLeft: '20px',
-          marginTop: '-30px',
+          bottom: 0,
+          top: 'unset',
+          left: 0,
+          right: 0,
+          margin: 0,
+          width: '100%',
+          borderRadius: 0,
+          padding: '30px',
         })
       },
+      position: 'bottom',
       action: () => {
-        if (pathname != "/account/verification") {
-          navigate("/account/verification");
+        if (pathname !== '/account/verification') {
+          navigate('/account/verification');
         }
       },
     },
@@ -2224,7 +2343,7 @@ function Main() {
       content: ({ goTo, inDOM, setCurrentStep }) => (
         <div className="flex flex-col items-center justify-center">
           <p className="font-semibold text-[18px]">Under Payments, view your payment history</p>
-          <span className="mt-1 text-sm font-semibold">	Payments you’ve made after bookings are completed.</span>
+          <span className="mt-1 text-sm font-semibold">	Payments you've made after bookings are completed.</span>
           <div className="flex justify-start w-full gap-4">
             <button onClick={() => setCurrentStep(7)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Prev step</button>
             <button onClick={() => setCurrentStep(9)} className="bg-[#0ba68a] text-white py-[7px] px-[10px] mt-2 rounded-md">Next step</button>

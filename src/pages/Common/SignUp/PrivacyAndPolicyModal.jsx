@@ -8,9 +8,9 @@ import { useState } from "react";
 import { Fragment } from "react";
 import MkdSDK from "@/utils/MkdSDK";
 
-const PrivacyAndPolicyModal = ({ isOpen, closeModal, setIsRead }) => {
+const PrivacyAndPolicyModal = ({ isOpen, closeModal, setIsRead, isRead }) => {
   const [privacy, setPrivacy] = useState("");
-  const [hasRead, setHasRead] = useState(false);
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
   const { dispatch: globalDispatch } = useContext(GlobalContext);
 
   async function fetchPrivacyPolicy() {
@@ -39,12 +39,18 @@ const PrivacyAndPolicyModal = ({ isOpen, closeModal, setIsRead }) => {
     fetchPrivacyPolicy();
   }, []);
 
+  // Reset scroll state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setHasScrolledToBottom(false);
+    }
+  }, [isOpen]);
+
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
     const scrolledToBottom = scrollTop + clientHeight >= scrollHeight - 10; // 10px threshold
-    if (scrolledToBottom && !hasRead) {
-      setHasRead(true);
-      if (setIsRead) setIsRead(true);
+    if (scrolledToBottom) {
+      setHasScrolledToBottom(true);
     }
   };
 
@@ -112,10 +118,19 @@ const PrivacyAndPolicyModal = ({ isOpen, closeModal, setIsRead }) => {
                     type={"checkbox"}
                     name="i-have-read-privacy"
                     id="i-have-read-privacy"
-                    checked={hasRead}
+                    checked={isRead}
                     onChange={() => {
-                      setHasRead((prev) => !prev);
-                      if (setIsRead) setIsRead((prev) => !prev);
+                      if (!hasScrolledToBottom) {
+                        globalDispatch({
+                          type: "SHOW_ERROR",
+                          payload: {
+                            heading: "Please read the Privacy Policy",
+                            message: "You must scroll to the bottom of the Privacy Policy before agreeing.",
+                          },
+                        });
+                        return;
+                      }
+                      setIsRead((prev) => !prev);
                       closeModal();
                     }}
                   />

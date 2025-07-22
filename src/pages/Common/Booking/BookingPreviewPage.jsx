@@ -18,7 +18,7 @@ import MultipleBookingErrorModal from "./MultipleBookingErrorModal";
 import { AuthContext, tokenExpireError } from "@/authContext";
 import { loadStripe } from "@stripe/stripe-js";
 import SelectExistingCardsModal from "@/pages/Customer/Bookings/SelectExistingCardsModal";
-
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 const cardIcons = {
@@ -40,7 +40,14 @@ const BookingPreviewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [paymentOptions, setPaymentOptions] = useState(false);
+  const [recaptchaValue, setRecaptchaValue] = useState(null);
+  const [recaptchaError, setRecaptchaError] = useState("");
   const bookingDetails = bookingData?.from !== "" ? bookingData : JSON.parse(localStorage.getItem("booking_details"));
+
+  const handleRecaptchaChange = (value) => {
+    setRecaptchaValue(value);
+    setRecaptchaError("");
+  };
 
   const { register, watch } = useForm();
   const selectedAddons = watch();
@@ -197,6 +204,12 @@ const BookingPreviewPage = () => {
   }
 
   const makePayment = () => {
+    // Check if reCAPTCHA is completed
+    if (!recaptchaValue) {
+      setRecaptchaError("Please complete the reCAPTCHA verification");
+      return;
+    }
+
     if (cards.length > 0) {
       setExistingCardsModal(true)
     } else {
@@ -369,13 +382,15 @@ const BookingPreviewPage = () => {
                 <p className="font-semibold text-[#344054]"> ${(total_additional_guest_rate + total_rate + addon_cost + (((total_additional_guest_rate + total_rate) * (bookingDetails?.tax ?? tax)) / 100)).toFixed(2)}</p>
               </div>
             </div>
-            {/* {!(tax == null || commission == null) && (
               <ReCAPTCHA
-                className="mb-2 recaptcha-v2"
-                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-                onChange={onChange}
-              />
-            )} */}
+              sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+              onChange={handleRecaptchaChange}
+              onExpired={() => setRecaptchaValue(null)}
+            />
+            
+            {recaptchaError && (
+              <p className="error-vibrate my-3 rounded-md border border-[#C42945] bg-white py-2 px-3 text-center text-sm normal-case text-[#C42945]">{recaptchaError}</p>
+            )}
 
             <LoadingButton
               loading={loading}
@@ -383,7 +398,7 @@ const BookingPreviewPage = () => {
                 }`}
               onClick={() => makePayment()}
 
-              disabled={(tax == null ?? bookingDetails?.tax) || commission == null}
+              disabled={(tax == null ?? bookingDetails?.tax) || commission == null || !recaptchaValue}
             >
               Make Payment
             </LoadingButton>
